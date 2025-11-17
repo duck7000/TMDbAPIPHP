@@ -1,0 +1,21 @@
+<?php
+
+#############################################################################
+# musicBrainzPHP                                ed (github user: duck7000)  #
+# written by ed (github user: duck7000)                                     #
+# ------------------------------------------------------------------------- #
+# This program is free software; you can redistribute and/or modify it      #
+# under the terms of the GNU General Public License (see doc/LICENSE)       #
+#############################################################################
+
+require_once __DIR__ . '/src/Psr/Log/LoggerInterface.php';
+require_once __DIR__ . '/src/Psr/SimpleCache/CacheInterface.php';
+require_once __DIR__ . '/src/Tmdb/Exception.php';
+require_once __DIR__ . '/src/Tmdb/Config.php';
+require_once __DIR__ . '/src/Tmdb/Logger.php';
+require_once __DIR__ . '/src/Tmdb/Cache.php';
+require_once __DIR__ . '/src/Tmdb/Request.php';
+require_once __DIR__ . '/src/Tmdb/Api.php';
+require_once __DIR__ . '/src/Tmdb/MdbBase.php';
+require_once __DIR__ . '/src/Tmdb/Title.php';
+require_once __DIR__ . '/src/Tmdb/TitleSearch.php';
