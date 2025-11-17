@@ -72,31 +72,6 @@ class Config
      * @var int
      */
     public $titleSearchAmount = 25;
-    
-    /**
-     * Title search format
-     * Default: cd (insensitive to case, spaces, and separators)
-     * possible types:
-     *      All (returns all format types)
-     *      CD
-     *      Digital Media
-     *      Vinyl
-     *      7\"%2BVinyl (7 Inch Vinyl)
-     *      10\"%2BVinyl (10 Inch Vinyl)
-     *      12\"%2BVinyl (12 Inch Vinyl)
-     *      Cassette
-     *      CD-R
-     *      SACD
-     *      DVD
-     *      Other
-     *      Blu-ray
-     *      miniDisc
-     *      DVD-Video
-     *      DVD-Audio
-     *      VHS
-     * @var string
-     */
-    public $titleSearchFormat = "CD";
 
     // Debug config
     /**
@@ -104,46 +79,6 @@ class Config
      * @var boolean
      */
     public $debug = false;
-
-    /**
-     * Add wikipedia data to Title class fetchData()
-     * if true this can take a bit longer!
-     * @var boolean
-     * Default: true
-     */
-    public $addWikipedia = true;
-
-    /**
-     * Add lyrics data to Title class fetchData()
-     * if true this can take a bit longer!
-     * @var boolean
-     * Default: true
-     */
-    public $addLyricsData = true;
-
-    /**
-     * Add cover images to Title class fetchData()
-     * if true this can take a bit longer!
-     * @var boolean
-     * Default: true
-     */
-    public $addCoverImages = true;
-
-    /**
-     * Uncensor lyric text in Title class fetchData()
-     * @var boolean
-     * Default: true
-     */
-    public $uncensor = true;
-
-    /**
-     * Include api search if exaxt api match fails in Title class fetchData()
-     * This setting is to include the possibilty to include the search part of the external API
-     * Warning: if this is set to true it will increase search time drasticly
-     * @var boolean
-     * Default: true
-     */
-    public $apiSearch = true;
 
     /**
      * Throw Exception if something goes wrong with the api call
