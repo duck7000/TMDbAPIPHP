@@ -1,16 +1,9 @@
 <?php
 
-#############################################################################
-# TMDbAPIPHP                                    ed (github user: duck7000)  #
-# written by ed (github user: duck7000)                                     #
-# ------------------------------------------------------------------------- #
-# This program is free software; you can redistribute and/or modify it      #
-# under the terms of the GNU General Public License (see doc/LICENSE)       #
-#############################################################################
-
 namespace Tmdb;
 
 use Psr\Log\LoggerInterface;
+use Stringable;
 
 /**
  * Debug logging. Echos html to the page
@@ -32,7 +25,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public function emergency($message, array $context = array())
+    public function emergency(Stringable|string $message, array $context = []): void
     {
         $this->log('emergency', $message, $context);
     }
@@ -47,7 +40,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public function alert($message, array $context = array())
+    public function alert(Stringable|string $message, array $context = []): void
     {
         $this->log('alert', $message, $context);
     }
@@ -61,7 +54,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public function critical($message, array $context = array())
+    public function critical(Stringable|string $message, array $context = []): void
     {
         $this->log('critical', $message, $context);
     }
@@ -74,7 +67,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public function error($message, array $context = array())
+    public function error(Stringable|string $message, array $context = []): void
     {
         $this->log('error', $message, $context);
     }
@@ -89,7 +82,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public function warning($message, array $context = array())
+    public function warning(Stringable|string $message, array $context = []): void
     {
         $this->log('debug', $message, $context);
     }
@@ -101,7 +94,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public function notice($message, array $context = array())
+    public function notice(Stringable|string $message, array $context = []): void
     {
         $this->log('debug', $message, $context);
     }
@@ -115,7 +108,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public function info($message, array $context = array())
+    public function info(Stringable|string $message, array $context = []): void
     {
         $this->log('debug', $message, $context);
     }
@@ -127,7 +120,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public function debug($message, array $context = array())
+    public function debug(Stringable|string $message, array $context = []): void
     {
         $this->log('debug', $message, $context);
     }
@@ -140,7 +133,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, Stringable|string $message, array $context = []): void
     {
         if ($this->enabled) {
             $replace = array();
