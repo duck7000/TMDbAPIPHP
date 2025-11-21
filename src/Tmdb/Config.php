@@ -58,20 +58,49 @@ class Config
      * @var integer
      */
     public $cacheExpire = 604800;
-
-
-    /**
-     * Default userAgent to use in request, for musicBrainz must be something that identifys the user and program
-     * @var string
-     */
-    public $userAgent = 'programName V1.0 (www.example.com)';
     
     /**
-     * Title search results
-     * Possible range = 1 - 100 (1 and 100 included)
-     * @var int
+     * TMDb API base url
+     * @var string
      */
-    public $titleSearchAmount = 25;
+    public $apiUrl = 'https://api.themoviedb.org';
+
+    /**
+     * TMDb API version
+     * @var string
+     */
+    public $apiVersion = '3';
+
+    /**
+     * TMDb API key (not bearer token!)
+     * @var string
+     */
+    public $apiKey = '';
+
+    /**
+     * TMDb API base image url
+     * @var string
+     */
+    public $baseImageUrl = 'https://image.tmdb.org/t/p';
+
+    /**
+     * TMDb API poster image size, default: w185
+     * Possible values:
+     *      original (orginal size, can be huge!)
+     *      w92, w154, w185, w342, w500, w780 (w = width)
+     * @var string
+     */
+    public $posterImageSize = 'w185';
+
+    /**
+     * TMDb API person profile image size, default: w185
+     * Possible values:
+     *      original (orginal size, can be huge!)
+     *      w45, w185, h632 (w = width, h= height)
+     * @var string
+     */
+    public $profileImageSize = 'w185';
+
 
     // Debug config
     /**
