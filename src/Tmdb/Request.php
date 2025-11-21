@@ -18,7 +18,6 @@ class Request
 {
     private $ch;
     private $page;
-    private $requestHeaders = array();
     private $responseHeaders = array();
     private $config;
 
@@ -33,15 +32,15 @@ class Request
         curl_setopt($this->ch, CURLOPT_ENCODING, "");
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->ch, CURLOPT_HEADERFUNCTION, array(&$this, "callback_CURLOPT_HEADERFUNCTION"));
-        curl_setopt($this->ch, CURLOPT_USERAGENT, $this->config->userAgent);
+        curl_setopt($this->ch, CURLOPT_HEADER, false);
+        curl_setopt($this->ch, CURLOPT_FAILONERROR, true);
         curl_setopt($this->ch, CURLOPT_TIMEOUT, 90);
         curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($this->ch, CURLOPT_MAXREDIRS, 20);
-    }
-
-    public function addHeaderLine($name, $value)
-    {
-        $this->requestHeaders[] = "$name: $value";
+        curl_setopt($this->ch, CURLOPT_HTTPHEADER, array(
+            'Accept: application/json',
+            'Content-type: application/json'
+        ));
     }
 
     /**
@@ -50,7 +49,6 @@ class Request
     public function sendRequest()
     {
         $this->responseHeaders = array();
-        curl_setopt($this->ch, CURLOPT_HTTPHEADER, $this->requestHeaders);
         $this->page = curl_exec($this->ch);
         curl_close($this->ch);
         if ($this->page !== false) {
