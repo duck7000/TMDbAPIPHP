@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
 /**
- * A title on musicBrainz API
+ * A title on TMDb API
  * @author ed (github user: duck7000)
  */
 class MdbBase extends Config
@@ -42,16 +42,6 @@ class MdbBase extends Config
     protected $api;
 
     /**
-     * @var string musicBrainz id
-     */
-    protected $mbID;
-
-    /**
-     * @var string musicBrainz artist id
-     */
-    protected $arID;
-
-    /**
      * @param Config $config OPTIONAL override default config
      * @param LoggerInterface $logger OPTIONAL override default logger `\Imdb\Logger` with a custom one
      * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
@@ -62,33 +52,6 @@ class MdbBase extends Config
         $this->logger = empty($logger) ? new Logger($this->debug) : $logger;
         $this->cache = empty($cache) ? new Cache($this->config, $this->logger) : $cache;
         $this->api = new Api($this->cache, $this->logger, $this->config);
-    }
-
-    /**
-     * Retrieve the mbID (musicBrainz id)
-     * @return string id mbID currently used
-     */
-    public function mbid()
-    {
-        return $this->mbID;
-    }
-
-    /**
-     * Set mbID
-     * @param string id musicBrainz ID
-     */
-    protected function setid($id)
-    {
-        $this->mbID = $id;
-    }
-
-    /**
-     * Set arID (Aritst Id)
-     * @param string id musicBrainz Artist ID
-     */
-    protected function setArtistId($id)
-    {
-        $this->arID = $id;
     }
 
     #---------------------------------------------------------[ Debug helpers ]---
