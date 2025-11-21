@@ -18,4 +18,4 @@ require_once __DIR__ . '/src/Tmdb/Request.php';
 require_once __DIR__ . '/src/Tmdb/Api.php';
 require_once __DIR__ . '/src/Tmdb/MdbBase.php';
 require_once __DIR__ . '/src/Tmdb/Title.php';
-require_once __DIR__ . '/src/Tmdb/TitleSearch.php';
+require_once __DIR__ . '/src/Tmdb/Search.php';
