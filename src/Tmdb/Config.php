@@ -101,6 +101,23 @@ class Config
      */
     public $profileImageSize = 'w185';
 
+    /**
+     * TMDb API company logo image size, default: w92
+     * Possible values:
+     *      original (orginal size, can be huge!)
+     *      w45, w92, w154, w185, w300, w500 (w = width)
+     * @var string
+     */
+    public $logoImageSize = 'w92';
+
+    /**
+     * TMDb API backdrop image size, default: w300
+     * Possible values:
+     *      original (orginal size, can be huge!)
+     *      w300, w780, w1280 (w = width)
+     * @var string
+     */
+    public $backdropImageSize = 'w300';
 
     // Debug config
     /**
