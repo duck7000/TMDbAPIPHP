@@ -42,6 +42,11 @@ class MdbBase extends Config
     protected $api;
 
     /**
+     * @var string identifier for this person or title
+     */
+    protected $tmdbID;
+
+    /**
      * @param Config $config OPTIONAL override default config
      * @param LoggerInterface $logger OPTIONAL override default logger `\Imdb\Logger` with a custom one
      * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
@@ -52,6 +57,28 @@ class MdbBase extends Config
         $this->logger = empty($logger) ? new Logger($this->debug) : $logger;
         $this->cache = empty($cache) ? new Cache($this->config, $this->logger) : $cache;
         $this->api = new Api($this->cache, $this->logger, $this->config);
+    }
+
+    /**
+     * Retrieve the TMDb ID
+     * @return string id TMDbID currently used
+     */
+    public function tmdbid()
+    {
+        return $this->tmdbID;
+    }
+
+    /**
+     * Set and validate the TMDb ID
+     * @param string id TMDb ID
+     */
+    protected function setid($id)
+    {
+        if (is_numeric($id)) {
+            $this->tmdbID = $id;
+        } else {
+            $this->debug_scalar("<BR>setid: Invalid TMDB ID '$id'!<BR>");
+        }
     }
 
     #---------------------------------------------------------[ Debug helpers ]---
