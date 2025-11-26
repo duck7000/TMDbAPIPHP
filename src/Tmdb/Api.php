@@ -95,6 +95,25 @@ class Api
     }
 
     /**
+     * Get request for Person class fetchPersonData()
+     * @param string $tmdbPersonId input TMDb ID
+     * @param array $inputMethods add additional data like credits etc
+     * @return \stdClass
+     */
+    public function doPersonLookup($tmdbPersonId, $inputMethods)
+    {
+        $url = $this->apiUrl . '/' . $this->apiVersion . '/person/' . $tmdbPersonId;
+        if (!empty($inputMethods)) {
+            $url .= '?append_to_response=' . implode(",", $inputMethods);
+        } else {
+            $url .= '?';
+        }
+        $url .= '&api_key=' . $this->apiKey;
+        $inputMethodsHashed = $this->createMd5($inputMethods);
+        return $this->setCache($tmdbPersonId, $url, $inputMethodsHashed);
+    }
+
+    /**
      * Execute request
      * @param string $url
      * @return \stdClass
