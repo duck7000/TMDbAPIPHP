@@ -76,6 +76,24 @@ class Api
     }
 
     /**
+     * Get request for Movie class fetchMovieData()
+     * @param string $tmdbMovieId input TMDb ID
+     * @param array $inputMethods add additional data like videos, images etc
+     * @return \stdClass
+     */
+    public function doMovieLookup($tmdbMovieId, $inputMethods)
+    {
+        $url = $this->apiUrl . '/' . $this->apiVersion . '/movie/' . $tmdbMovieId;
+        if (!empty($inputMethods)) {
+            $url .= '?append_to_response=' . implode(",", $inputMethods);
+        } else {
+            $url .= '?';
+        }
+        $url .= '&api_key=' . $this->apiKey;
+        return $this->execRequest($url);
+    }
+
+    /**
      * Execute request
      * @param string $url
      * @return \stdClass
