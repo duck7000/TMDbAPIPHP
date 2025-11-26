@@ -90,7 +90,8 @@ class Api
             $url .= '?';
         }
         $url .= '&api_key=' . $this->apiKey;
-        return $this->execRequest($url);
+        $inputMethodsHashed = $this->createMd5($inputMethods);
+        return $this->setCache($tmdbMovieId, $url, $inputMethodsHashed);
     }
 
     /**
@@ -117,6 +118,37 @@ class Api
                 return new \StdClass();
             }
         }
+    }
+
+    /**
+     * Caching return data
+     * @param string $id TMDb id from doMovieLookup(), doTvLookup() and doPersonLookup()
+     * @param string $url exec url from doMovieLookup(), doTvLookup() and doPersonLookup()
+     * @param string $cacheNameExtension filename extension (md5 hash) for caching
+     * @return \stdClass
+     */
+    public function setCache($id, $url, $cacheNameExtension = '')
+    {
+        $key = $id . '_' . $cacheNameExtension . '.json';
+        $fromCache = $this->cache->get($key);
+
+        if ($fromCache != null) {
+            return json_decode($fromCache);
+        }
+        $data = $this->execRequest($url);
+        $this->cache->set($key, json_encode($data));
+        return $data;
+    }
+
+    /**
+     * create md5 hash from inputMethods array for caching
+     * @param array $inputMethods from doMovieLookup(), doTvLookup() and doPersonLookup()
+     * @return string mdb hash
+     */
+    public function createMd5($inputMethods)
+    {
+        array_multisort($inputMethods);
+        return md5(json_encode($inputMethods));
     }
 
 }
