@@ -51,20 +51,15 @@ class Person extends MdbBase
 
     /**
      * Fetch person data of a TMDb ID
-     * @note without $inputMethods only person details are included
-     * @param array $inputMethods add additional data like credits etc
-     * possible values for $inputMethods:
-     *      combined_credits all credits like cast and crew for movie and tv combined
      * @return array (see wiki for details)
      */
-    public function fetchPersonData($inputMethods = array())
+    public function fetchPersonData()
     {
         // Data request
-        $data = $this->api->doPersonLookup($this->tmdbID, $inputMethods);
+        $data = $this->api->doPersonLookup($this->tmdbID);
         if (empty($data)) {
             return $this->results;
         }
-        var_dump($data);
         $this->tmdbId = isset($data->id) ? $data->id : null;
         $this->imdbId = isset($data->imdb_id) ? $data->imdb_id : null;
         $this->name = isset($data->name) ? $data->name : null;

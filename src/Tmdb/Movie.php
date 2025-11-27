@@ -65,21 +65,12 @@ class Movie extends MdbBase
 
     /**
      * Fetch movie data of a TMDb ID
-     * @note without $inputMethods only movie details are included
-     * @param array $inputMethods add additional data like videos, images etc
-     * possible values for $inputMethods:
-     *      alternative_titles  (Get the alternative titles for a movie.)
-     *      credits             (all credits like cast and crew)
-     *      images              (all image urls of this movie)
-     *      keywords            (all keywords of this movie)
-     *      recommendations     (get recommendations for this movie) max 20
-     *      videos              (get all video urls of this movie)
      * @return array (see wiki for details)
      */
-    public function fetchMovieData($inputMethods = array())
+    public function fetchMovieData()
     {
         // Data request
-        $data = $this->api->doMovieLookup($this->tmdbID, $inputMethods);
+        $data = $this->api->doMovieLookup($this->tmdbID);
         if (empty($data)) {
             return $this->results;
         }

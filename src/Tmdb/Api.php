@@ -78,40 +78,29 @@ class Api
     /**
      * Get request for Movie class fetchMovieData()
      * @param string $tmdbMovieId input TMDb ID
-     * @param array $inputMethods add additional data like videos, images etc
      * @return \stdClass
      */
-    public function doMovieLookup($tmdbMovieId, $inputMethods)
+    public function doMovieLookup($tmdbMovieId)
     {
         $url = $this->apiUrl . '/' . $this->apiVersion . '/movie/' . $tmdbMovieId;
-        if (!empty($inputMethods)) {
-            $url .= '?append_to_response=' . implode(",", $inputMethods);
-        } else {
-            $url .= '?';
-        }
+        $url .= '?append_to_response=alternative_titles,credits,images,keywords,recommendations,videos';
         $url .= '&api_key=' . $this->apiKey;
-        $inputMethodsHashed = $this->createMd5($inputMethods);
-        return $this->setCache($tmdbMovieId, $url, $inputMethodsHashed);
+        return $this->setCache($tmdbMovieId, $url);
     }
 
     /**
      * Get request for Person class fetchPersonData()
      * @param string $tmdbPersonId input TMDb ID
-     * @param array $inputMethods add additional data like credits etc
      * @return \stdClass
      */
-    public function doPersonLookup($tmdbPersonId, $inputMethods)
+    public function doPersonLookup($tmdbPersonId)
     {
         $url = $this->apiUrl . '/' . $this->apiVersion . '/person/' . $tmdbPersonId;
-        if (!empty($inputMethods)) {
-            $url .= '?append_to_response=' . implode(",", $inputMethods);
-        } else {
-            $url .= '?';
-        }
+        $url .= '?append_to_response=combined_credits';
         $url .= '&api_key=' . $this->apiKey;
-        $inputMethodsHashed = $this->createMd5($inputMethods);
-        return $this->setCache($tmdbPersonId, $url, $inputMethodsHashed);
+        return $this->setCache($tmdbPersonId, $url);
     }
+
 
     /**
      * Execute request
@@ -143,12 +132,11 @@ class Api
      * Caching return data
      * @param string $id TMDb id from doMovieLookup(), doTvLookup() and doPersonLookup()
      * @param string $url exec url from doMovieLookup(), doTvLookup() and doPersonLookup()
-     * @param string $cacheNameExtension filename extension (md5 hash) for caching
      * @return \stdClass
      */
-    public function setCache($id, $url, $cacheNameExtension = '')
+    public function setCache($id, $url)
     {
-        $key = $id . '_' . $cacheNameExtension . '.json';
+        $key = $id . '.json';
         $fromCache = $this->cache->get($key);
 
         if ($fromCache != null) {
@@ -157,17 +145,6 @@ class Api
         $data = $this->execRequest($url);
         $this->cache->set($key, json_encode($data));
         return $data;
-    }
-
-    /**
-     * create md5 hash from inputMethods array for caching
-     * @param array $inputMethods from doMovieLookup(), doTvLookup() and doPersonLookup()
-     * @return string mdb hash
-     */
-    public function createMd5($inputMethods)
-    {
-        array_multisort($inputMethods);
-        return md5(json_encode($inputMethods));
     }
 
 }
