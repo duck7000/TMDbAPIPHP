@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
 /**
- * Accessing cd album information through musicBrainz API
+ * Accessing movie, tv and person through TMDb API
  * @author Ed (duck7000)
  */
 class Api
@@ -24,8 +24,16 @@ class Api
     private $logger;
     private $config;
     protected $apiUrl;
-    protected $apiVersion;
     protected $apiKey;
+    protected $apendOptions = array(
+        'alternative_titles',
+        'credits',
+        'external_ids',
+        'images',
+        'keywords',
+        'recommendations',
+        'videos'
+    );
 
     /**
      * API constructor.
@@ -38,9 +46,8 @@ class Api
         $this->cache = $cache;
         $this->logger = $logger;
         $this->config = $config;
-        $this->apiUrl = $this->config->apiUrl;
-        $this->apiVersion = $this->config->apiVersion;
-        $this->apiKey = $this->config->apiKey;
+        $this->apiUrl = $this->config->apiUrl . '/' . $this->config->apiVersion;
+        $this->apiKey = '&api_key=' . $this->config->apiKey;
     }
 
     /**
@@ -51,12 +58,11 @@ class Api
      */
     public function doTextSearch($searchInputString, $searchType)
     {
-        $url = $this->apiUrl . '/' . $this->apiVersion .
-            '/search/' . $searchType .
+        $url = $this->apiUrl . '/search/' . $searchType .
             '?query=' . $searchInputString .
             '&include_adult=true' .
             '&page=1' .
-            '&api_key=' . $this->apiKey;
+            $this->apiKey;
         return $this->execRequest($url);
     }
 
@@ -68,10 +74,9 @@ class Api
      */
     public function doExternalIdSearch($externalId, $externalSource)
     {
-        $url = $this->apiUrl . '/' . $this->apiVersion .
-            '/find/' . $externalId .
+        $url = $this->apiUrl . '/find/' . $externalId .
             '?external_source=' . $externalSource .
-            '&api_key=' . $this->apiKey;
+            $this->apiKey;
         return $this->execRequest($url);
     }
 
@@ -82,9 +87,15 @@ class Api
      */
     public function doMovieLookup($tmdbMovieId)
     {
-        $url = $this->apiUrl . '/' . $this->apiVersion . '/movie/' . $tmdbMovieId;
-        $url .= '?append_to_response=alternative_titles,credits,images,keywords,recommendations,videos';
-        $url .= '&api_key=' . $this->apiKey;
+        $url = $this->apiUrl . '/movie/' . $tmdbMovieId;
+        $url .= '?append_to_response=';
+        foreach ($this->apendOptions as $key => $value) {
+            $url .= $value;
+            if ($key !== array_key_last($this->apendOptions)) {
+                $url .= ',';
+            }
+        }
+        $url .= $this->apiKey;
         return $this->setCache($tmdbMovieId, $url);
     }
 
@@ -95,10 +106,50 @@ class Api
      */
     public function doPersonLookup($tmdbPersonId)
     {
-        $url = $this->apiUrl . '/' . $this->apiVersion . '/person/' . $tmdbPersonId;
+        $url = $this->apiUrl . '/person/' . $tmdbPersonId;
         $url .= '?append_to_response=combined_credits';
-        $url .= '&api_key=' . $this->apiKey;
+        $url .= $this->apiKey;
         return $this->setCache($tmdbPersonId, $url);
+    }
+
+    /**
+     * Get request for Tv class fetchTvData()
+     * @param string $tmdbTvId input TMDb ID
+     * @return \stdClass
+     */
+    public function doTvLookup($tmdbTvId)
+    {
+        $url = $this->apiUrl . '/tv/' . $tmdbTvId;
+        $url .= '?append_to_response=';
+        foreach ($this->apendOptions as $key => $value) {
+            $url .= $value;
+            if ($key !== array_key_last($this->apendOptions)) {
+                $url .= ',';
+            }
+        }
+        $url .= $this->apiKey;
+        return $this->setCache($tmdbTvId, $url);
+    }
+
+    /**
+     * Get request for Tv seasons and episodes for fetchTvData()
+     * @param string $tmdbTvId input TMDb ID
+     * @return \stdClass
+     */
+    public function doTvSeasonsLookup($tmdbTvId, $totalSeasons)
+    {
+        $appendUrl = $this->apiUrl . '/tv/' . $tmdbTvId;
+        $appendUrl .= '?append_to_response=';
+        $season = 1;
+        while($season <= $totalSeasons) {
+            $appendUrl .= 'season/' . $season;
+            if ($season < $totalSeasons) {
+                $appendUrl .= ',';
+            }
+            $season++;
+        }
+        $appendUrl .= $this->apiKey;
+        return $this->setCache($tmdbTvId, $appendUrl, '_Seasons');
     }
 
 
@@ -134,9 +185,9 @@ class Api
      * @param string $url exec url from doMovieLookup(), doTvLookup() and doPersonLookup()
      * @return \stdClass
      */
-    public function setCache($id, $url)
+    public function setCache($id, $url, $ext = '')
     {
-        $key = $id . '.json';
+        $key = $id . $ext . '.json';
         $fromCache = $this->cache->get($key);
 
         if ($fromCache != null) {
