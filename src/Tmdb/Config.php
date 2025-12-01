@@ -119,6 +119,15 @@ class Config
      */
     public $backdropImageSize = 'w300';
 
+    /**
+     * TMDb API still image size, default: w185
+     * Possible values:
+     *      original (orginal size, can be huge!)
+     *      w92, w185, w300 (w = width)
+     * @var string
+     */
+    public $stillImageSize = 'w185';
+
     // Debug config
     /**
      * Debug mode true or false
