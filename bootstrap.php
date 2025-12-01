@@ -19,4 +19,5 @@ require_once __DIR__ . '/src/Tmdb/Api.php';
 require_once __DIR__ . '/src/Tmdb/MdbBase.php';
 require_once __DIR__ . '/src/Tmdb/Movie.php';
 require_once __DIR__ . '/src/Tmdb/Person.php';
+require_once __DIR__ . '/src/Tmdb/Tv.php';
 require_once __DIR__ . '/src/Tmdb/Search.php';
