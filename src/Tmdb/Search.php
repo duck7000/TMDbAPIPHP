@@ -21,6 +21,9 @@ class Search extends MdbBase
      *      "tv"
      *      "movie"
      *      "person"
+     *      "keyword"
+     *      "company"
+     *      "collection"
      *      "multi" (search within all types)
      * @return
      * Array(
@@ -28,7 +31,7 @@ class Search extends MdbBase
      *          [id] => 940751
      *          [name] => Reasons
      *          [originalName] => Reasons
-     *          [date] => 2022-06-23 (person: null)
+     *          [date] => 2022-06-23
      *          [type] => movie
      *          [imgUrl] => https://image.tmdb.org/t/p/w185/7JW6WKINXbvGxAFRvDiaN4SMY2h.jpg
      *      )
@@ -49,22 +52,19 @@ class Search extends MdbBase
                     'originalName' => isset($value->original_title) ? $value->original_title : null,
                     'date' => isset($value->release_date) ? $value->release_date : null,
                     'type' => isset($value->media_type) ? $value->media_type : 'movie',
-                    'imgUrl' => isset($value->poster_path) ?
-                                         $this->config->baseImageUrl . '/' .
-                                         $this->config->posterImageSize .
-                                         $value->poster_path : null,
+                    'imgUrl' => isset($value->poster_path) ? $this->config->baseImageUrl . '/' .
+                                                             $this->config->posterImageSize .
+                                                             $value->poster_path : null,
                 );
             } elseif ($searchType === 'person'|| (isset($value->media_type) && $value->media_type === 'person')) {
                 $results[] = array(
                     'id' => isset($value->id) ? $value->id : null,
                     'name' => isset($value->name) ? $value->name : null,
                     'originalName' => isset($value->original_name) ? $value->original_name : null,
-                    'date' => null,
                     'type' => isset($value->media_type) ? $value->media_type : 'person',
-                    'imgUrl' => isset($value->profile_path) ?
-                                         $this->config->baseImageUrl . '/' .
-                                         $this->config->profileImageSize .
-                                         $value->profile_path : null,
+                    'imgUrl' => isset($value->profile_path) ? $this->config->baseImageUrl . '/' .
+                                                              $this->config->profileImageSize .
+                                                              $value->profile_path : null,
                 );
             } elseif ($searchType === 'tv'|| (isset($value->media_type) && $value->media_type === 'tv')) {
                 $results[] = array(
@@ -73,10 +73,32 @@ class Search extends MdbBase
                     'originalName' => isset($value->original_name) ? $value->original_name : null,
                     'type' => isset($value->media_type) ? $value->media_type : 'tv',
                     'date' => isset($value->first_air_date) ? $value->first_air_date : null,
-                    'imgUrl' => isset($value->poster_path) ?
-                                         $this->config->baseImageUrl . '/' .
-                                         $this->config->posterImageSize .
-                                         $value->poster_path : null,
+                    'imgUrl' => isset($value->poster_path) ? $this->config->baseImageUrl . '/' .
+                                                             $this->config->posterImageSize .
+                                                             $value->poster_path : null,
+                );
+            } elseif ($searchType === 'keyword'|| (isset($value->media_type) && $value->media_type === 'keyword')) {
+                $results[] = array(
+                    'id' => isset($value->id) ? $value->id : null,
+                    'name' => isset($value->name) ? $value->name : null
+                );
+            } elseif ($searchType === 'company'|| (isset($value->media_type) && $value->media_type === 'company')) {
+                $results[] = array(
+                    'id' => isset($value->id) ? $value->id : null,
+                    'name' => isset($value->name) ? $value->name : null,
+                    'originCountry' => isset($value->origin_country) ? $value->origin_country : null,
+                    'imgUrl' => isset($value->logo_path) ? $this->config->baseImageUrl . '/' .
+                                                           $this->config->logoImageSize .
+                                                           $value->logo_path : null,
+                );
+            } elseif ($searchType === 'collection'|| (isset($value->media_type) && $value->media_type === 'collection')) {
+                $results[] = array(
+                    'id' => isset($value->id) ? $value->id : null,
+                    'name' => isset($value->name) ? $value->name : null,
+                    'originalName' => isset($value->original_name) ? $value->original_name : null,
+                    'imgUrl' => isset($value->poster_path) ? $this->config->baseImageUrl . '/' .
+                                                             $this->config->posterImageSize .
+                                                             $value->poster_path : null
                 );
             }
         }
