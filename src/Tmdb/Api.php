@@ -154,15 +154,16 @@ class Api
     }
 
     /**
-     * Get watch providers for fetchMovieData()
-     * @param string $tmdbMovieId input TMDb ID
+     * Get watch providers for Movie and Tv class
+     * @param string $tmdbId input TMDb ID
+     * @param string $mediaType input type like movie or tv
      * @return \stdClass
      */
-    public function doMovieWatchProviderLookup($tmdbMovieId)
+    public function doWatchProviderLookup($tmdbId, $mediaType)
     {
-        $url = $this->apiUrl . '/movie/' . $tmdbMovieId . '/watch/providers';
+        $url = $this->apiUrl . '/' . $mediaType . '/' . $tmdbId . '/watch/providers';
         $url .= '?' . $this->apiKey;
-        return $this->setCache($tmdbMovieId, $url, '_WatchProviders');
+        return $this->setCache($tmdbId, $url, '_WatchProviders');
     }
 
     /**

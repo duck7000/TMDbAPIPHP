@@ -304,7 +304,7 @@ class Movie extends MdbBase
             }
         }
         // Watch providers for this movie
-        $watchProviderData = $this->api->doMovieWatchProviderLookup($this->tmdbID);
+        $watchProviderData = $this->api->doWatchProviderLookup($this->tmdbID, 'movie');
         if (!empty($watchProviderData->results)) {
             
             $watchProviderResults = (array) $watchProviderData->results;
