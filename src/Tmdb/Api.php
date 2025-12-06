@@ -134,6 +134,7 @@ class Api
     /**
      * Get request for Tv seasons and episodes for fetchTvData()
      * @param string $tmdbTvId input TMDb ID
+     * @param int $totalSeasons total number of seasons off this tv series
      * @return \stdClass
      */
     public function doTvSeasonsLookup($tmdbTvId, $totalSeasons)
@@ -152,6 +153,17 @@ class Api
         return $this->setCache($tmdbTvId, $appendUrl, '_Seasons');
     }
 
+    /**
+     * Get watch providers for fetchMovieData()
+     * @param string $tmdbMovieId input TMDb ID
+     * @return \stdClass
+     */
+    public function doMovieWatchProviderLookup($tmdbMovieId)
+    {
+        $url = $this->apiUrl . '/movie/' . $tmdbMovieId . '/watch/providers';
+        $url .= '?' . $this->apiKey;
+        return $this->setCache($tmdbMovieId, $url, '_WatchProviders');
+    }
 
     /**
      * Execute request
@@ -183,6 +195,7 @@ class Api
      * Caching return data
      * @param string $id TMDb id from doMovieLookup(), doTvLookup() and doPersonLookup()
      * @param string $url exec url from doMovieLookup(), doTvLookup() and doPersonLookup()
+     * @param string $ext cache filename extension
      * @return \stdClass
      */
     public function setCache($id, $url, $ext = '')
