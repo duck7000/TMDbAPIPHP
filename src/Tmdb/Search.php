@@ -106,35 +106,20 @@ class Search extends MdbBase
     }
 
     /**
-     * Search for titles matching external id number
-     * @param string $externalId input external id number (complete number, all characters)
-     * @param string $externalSource input external id source, default: imdb_id
-     * FOR NOW ONLY IMDb IS SUPPORTED!
-     * Possible externalSource Types:
-     *      "imdb_id" (incl tt or nm)
-     *      "facebook_id"
-     *      "instagram_id"
-     *      "tvdb_id"
-     *      "tiktok_id"
-     *      "twitter_id"
-     *      "wikidata_id"
-     *      "youtube_id"
+     * Search for titles matching imdb tt or nm number
+     * @param string $externalId input imdb id (complete number, all characters)
      * @return
      * Array(
      *      [0] => Array(
      *          [id] => 3021
-     *          [name] => 1408
-     *          [originalName] => 1408
-     *          [date] => 2007-10-24 (person: null)
      *          [type] => movie
-     *          [imgUrl] => https://image.tmdb.org/t/p/w185/yE9MCW7ZNxSw5SC1TMqm51pMBIV.jpg
      *      )
      * )
      */
-    public function externalIdSearch($externalId, $externalSource = 'imdb_id')
+    public function externalIdSearch($externalId)
     {
         $results = array();
-        $data = $this->api->doExternalIdSearch($externalId, $externalSource);
+        $data = $this->api->doExternalIdSearch($externalId, "imdb_id");
         if (empty($data)) {
             return $results;
         }
@@ -144,35 +129,13 @@ class Search extends MdbBase
                 continue;
             }
             foreach ($value as $key => $item) {
-                if ($externalSource == 'imdb_id') {
-                    if (stripos($externalId, "nm") !==false) {
-                        // person, id start with nm
-                        $results[] = array(
-                            'id' => isset($item->id) ? $item->id : null,
-                            'name' => isset($item->name) ? $item->name : null,
-                            'originalName' => isset($item->original_name) ? $item->original_name : null,
-                            'date' => null,
-                            'type' => isset($item->media_type) ? $item->media_type : 'person',
-                            'imgUrl' => isset($item->profile_path) ?
-                                                 $this->config->baseImageUrl . '/' .
-                                                 $this->config->profileImageSize .
-                                                 $item->profile_path : null,
-                        );
-                    } else {
-                        // movie or tv, id start with tt
-                        $results[] = array(
-                            'id' => isset($item->id) ? $item->id : null,
-                            'name' => isset($item->title) ? $item->title : null,
-                            'originalName' => isset($item->original_title) ? $item->original_title : null,
-                            'date' => isset($item->release_date) ? $item->release_date : null,
-                            'type' => isset($item->media_type) ? $item->media_type : 'movie',
-                            'imgUrl' => isset($item->poster_path) ?
-                                                 $this->config->baseImageUrl . '/' .
-                                                 $this->config->posterImageSize .
-                                                 $item->poster_path : null,
-                        );
-                    }
-                } 
+                if (empty($item)) {
+                    continue;
+                }
+                $results = array(
+                    'id' => isset($item->id) ? $item->id : null,
+                    'type' => isset($item->media_type) ? $item->media_type : null
+                );
             }
         }
         return $results;
