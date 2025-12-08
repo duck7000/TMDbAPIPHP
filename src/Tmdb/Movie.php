@@ -381,7 +381,7 @@ class Movie extends MdbBase
             'tagline' => $this->tagline,
             'originCountry' => $this->originCountry,
             'spokenLanguages' => $this->spokenLanguages,
-            'genre' => $this->genres,
+            'genres' => $this->genres,
             'status' => $this->status,
             'revenue' => $this->revenue,
             'budget' => $this->budget,
