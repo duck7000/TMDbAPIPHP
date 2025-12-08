@@ -3,6 +3,9 @@ TMDbAPIPHP
 
 PHP library for retrieving movie or tv show from TMDb API.<br>
 
+all info is in the wiki pages<br>
+https://github.com/duck7000/TMDbAPIPHP/wiki
+
 
 Quick Start
 ===========
