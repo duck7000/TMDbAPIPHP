@@ -71,7 +71,7 @@ class Movie extends MdbBase
     public function fetchMovieData()
     {
         // Data request
-        $data = $this->api->doMovieLookup($this->tmdbID);
+        $data = $this->api->doLookup($this->tmdbID, "movie");
         if (empty($data)) {
             return $this->results;
         }

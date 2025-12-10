@@ -73,7 +73,7 @@ class Tv extends MdbBase
     public function fetchTvData()
     {
         // Data request
-        $data = $this->api->doTvLookup($this->tmdbID);
+        $data = $this->api->doLookup($this->tmdbID, "tv");
         if (empty($data)) {
             return $this->results;
         }

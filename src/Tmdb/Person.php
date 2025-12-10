@@ -56,7 +56,7 @@ class Person extends MdbBase
     public function fetchPersonData()
     {
         // Data request
-        $data = $this->api->doPersonLookup($this->tmdbID);
+        $data = $this->api->doLookup($this->tmdbID, "person");
         if (empty($data)) {
             return $this->results;
         }

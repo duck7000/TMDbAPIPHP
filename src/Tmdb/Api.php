@@ -25,15 +25,6 @@ class Api
     private $config;
     protected $apiUrl;
     protected $apiKey;
-    protected $apendOptions = array(
-        'alternative_titles',
-        'credits',
-        'external_ids',
-        'images',
-        'keywords',
-        'recommendations',
-        'videos'
-    );
 
     /**
      * API constructor.
@@ -81,54 +72,28 @@ class Api
     }
 
     /**
-     * Get request for Movie class fetchMovieData()
-     * @param string $tmdbMovieId input TMDb ID
+     * Get request for Movie, Tv and Person class
+     * @param string $tmdbId input TMDb ID
+     * @param string $movieType input movie type like movie, tv or person
      * @return \stdClass
      */
-    public function doMovieLookup($tmdbMovieId)
+    public function doLookup($tmdbId, $movieType)
     {
-        $url = $this->apiUrl . '/movie/' . $tmdbMovieId;
+        $url = $this->apiUrl . '/' . $movieType . '/' . $tmdbId;
         $url .= '?append_to_response=';
-        foreach ($this->apendOptions as $key => $value) {
-            $url .= $value;
-            if ($key !== array_key_last($this->apendOptions)) {
-                $url .= ',';
-            }
+        if ($movieType === 'person') {
+            $url .= 'combined_credits';
+        } else {
+            $url .= 'alternative_titles,';
+            $url .= 'credits,';
+            $url .= 'external_ids,';
+            $url .= 'images,';
+            $url .= 'keywords,';
+            $url .= 'recommendations,';
+            $url .= 'videos';
         }
         $url .= $this->apiKey;
-        return $this->setCache($tmdbMovieId, $url);
-    }
-
-    /**
-     * Get request for Person class fetchPersonData()
-     * @param string $tmdbPersonId input TMDb ID
-     * @return \stdClass
-     */
-    public function doPersonLookup($tmdbPersonId)
-    {
-        $url = $this->apiUrl . '/person/' . $tmdbPersonId;
-        $url .= '?append_to_response=combined_credits';
-        $url .= $this->apiKey;
-        return $this->setCache($tmdbPersonId, $url);
-    }
-
-    /**
-     * Get request for Tv class fetchTvData()
-     * @param string $tmdbTvId input TMDb ID
-     * @return \stdClass
-     */
-    public function doTvLookup($tmdbTvId)
-    {
-        $url = $this->apiUrl . '/tv/' . $tmdbTvId;
-        $url .= '?append_to_response=';
-        foreach ($this->apendOptions as $key => $value) {
-            $url .= $value;
-            if ($key !== array_key_last($this->apendOptions)) {
-                $url .= ',';
-            }
-        }
-        $url .= $this->apiKey;
-        return $this->setCache($tmdbTvId, $url);
+        return $this->setCache($tmdbId, $url);
     }
 
     /**
