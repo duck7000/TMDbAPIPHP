@@ -119,6 +119,34 @@ class Api
     }
 
     /**
+     * Get request for Movie class list popular()
+     * @param string $mediaType media type like movie, tv or person
+     * @param string $listName list name like popular, upcoming, topRated
+     * @param int $maxPages max number of data pages to return
+     * @return array
+     */
+    public function doListLookup($mediaType, $listName, $maxPages)
+    {
+        $page = 1;
+        $results = array();
+        $queryUrl = $this->apiUrl . '/' . $mediaType . '/' . $listName . '?';
+        $queryUrl .= $this->apiKey;
+        $queryUrl .= '&page=';
+        $firstReturnData = $this->execRequest($queryUrl . $page);
+        $totalPages = $firstReturnData->total_pages;
+        if ($totalPages < $maxPages) {
+            $maxPages = $totalPages;
+        }
+        while($page <= $maxPages) {
+            $requestData = $this->execRequest($queryUrl . $page);
+            $results = array_merge($results, $requestData->results);
+            $page++;
+            unset($requestData);
+        }
+        return $results;
+    }
+
+    /**
      * Get watch providers for Movie and Tv class
      * @param string $tmdbId input TMDb ID
      * @param string $mediaType input type like movie or tv
