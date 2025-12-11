@@ -21,3 +21,6 @@ require_once __DIR__ . '/src/Tmdb/Movie.php';
 require_once __DIR__ . '/src/Tmdb/Person.php';
 require_once __DIR__ . '/src/Tmdb/Tv.php';
 require_once __DIR__ . '/src/Tmdb/Search.php';
+require_once __DIR__ . '/src/Tmdb/MovieList.php';
+require_once __DIR__ . '/src/Tmdb/TvList.php';
+require_once __DIR__ . '/src/Tmdb/PersonList.php';
