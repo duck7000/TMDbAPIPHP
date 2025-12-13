@@ -24,3 +24,4 @@ require_once __DIR__ . '/src/Tmdb/Search.php';
 require_once __DIR__ . '/src/Tmdb/MovieList.php';
 require_once __DIR__ . '/src/Tmdb/TvList.php';
 require_once __DIR__ . '/src/Tmdb/PersonList.php';
+require_once __DIR__ . '/src/Tmdb/Trending.php';

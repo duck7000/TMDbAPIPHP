@@ -147,6 +147,19 @@ class Api
     }
 
     /**
+     * Get request for Movie, Tv and Person class
+     * @param string $type trending type: movie, person, tv, all (default: all)
+     * @param string $timeWindow time window: day, week (default: week)
+     * @return \stdClass
+     */
+    public function doListTrendingLookup($type, $timeWindow)
+    {
+        $url = $this->apiUrl . '/trending/' . $type . '/' . $timeWindow . '?';
+        $url .= $this->apiKey;
+        return $this->execRequest($url);
+    }
+
+    /**
      * Get watch providers for Movie and Tv class
      * @param string $tmdbId input TMDb ID
      * @param string $mediaType input type like movie or tv
