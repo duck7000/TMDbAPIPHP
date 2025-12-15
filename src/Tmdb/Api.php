@@ -49,25 +49,35 @@ class Api
      */
     public function doTextSearch($searchInputString, $searchType)
     {
-        $url = $this->apiUrl . '/search/' . $searchType .
-            '?query=' . $searchInputString .
-            '&include_adult=true' .
-            '&page=1' .
-            $this->apiKey;
+        $url = $this->apiUrl;
+        $url .= '/search/';
+        $url .= $searchType;
+        $url .= '?';
+        $url .= 'query=';
+        $url .= $searchInputString;
+        $url .= '&';
+        $url .= 'include_adult=true';
+        $url .= '&';
+        $url .= 'page=1';
+        $url .= $this->apiKey;
         return $this->execRequest($url);
     }
 
     /**
      * Search request for TitleSearch class for external id
      * @param string $externalId input external id number
-     * @param string $externalSource input external id source
+     * @param string $externalSource input external id (imdb only)
      * @return \stdClass
      */
     public function doExternalIdSearch($externalId, $externalSource)
     {
-        $url = $this->apiUrl . '/find/' . $externalId .
-            '?external_source=' . $externalSource .
-            $this->apiKey;
+        $url = $this->apiUrl;
+        $url.= '/find/';
+        $url.= $externalId;
+        $url.= '?';
+        $url.= 'external_source=';
+        $url.= $externalSource;
+        $url.= $this->apiKey;
         return $this->execRequest($url);
     }
 
@@ -79,8 +89,13 @@ class Api
      */
     public function doLookup($tmdbId, $movieType)
     {
-        $url = $this->apiUrl . '/' . $movieType . '/' . $tmdbId;
-        $url .= '?append_to_response=';
+        $url = $this->apiUrl;
+        $url .= '/';
+        $url .= $movieType;
+        $url .= '/';
+        $url .= $tmdbId;
+        $url .= '?';
+        $url .= 'append_to_response=';
         if ($movieType === 'person') {
             $url .= 'combined_credits';
         } else {
@@ -99,13 +114,15 @@ class Api
     /**
      * Get request for Tv seasons and episodes for fetchTvData()
      * @param string $tmdbTvId input TMDb ID
-     * @param int $totalSeasons total number of seasons off this tv series
      * @return \stdClass
      */
     public function doTvSeasonsLookup($tmdbTvId, $totalSeasons)
     {
-        $appendUrl = $this->apiUrl . '/tv/' . $tmdbTvId;
-        $appendUrl .= '?append_to_response=';
+        $appendUrl = $this->apiUrl;
+        $appendUrl .= '/tv/';
+        $appendUrl .= $tmdbTvId;
+        $appendUrl .= '?';
+        $appendUrl .= 'append_to_response=';
         $season = 1;
         while($season <= $totalSeasons) {
             $appendUrl .= 'season/' . $season;
@@ -129,9 +146,15 @@ class Api
     {
         $page = 1;
         $results = array();
-        $queryUrl = $this->apiUrl . '/' . $mediaType . '/' . $listName . '?';
+        $queryUrl = $this->apiUrl;
+        $queryUrl .= '/';
+        $queryUrl .= $mediaType;
+        $queryUrl .= '/';
+        $queryUrl .= $listName;
+        $queryUrl .= '?';
         $queryUrl .= $this->apiKey;
-        $queryUrl .= '&page=';
+        $queryUrl .= '&';
+        $queryUrl .= 'page=';
         $firstReturnData = $this->execRequest($queryUrl . $page);
         $totalPages = $firstReturnData->total_pages;
         if ($totalPages < $maxPages) {
@@ -154,7 +177,12 @@ class Api
      */
     public function doListTrendingLookup($type, $timeWindow)
     {
-        $url = $this->apiUrl . '/trending/' . $type . '/' . $timeWindow . '?';
+        $url = $this->apiUrl;
+        $url .= '/trending/';
+        $url .= $type;
+        $url .= '/';
+        $url .= $timeWindow;
+        $url .= '?';
         $url .= $this->apiKey;
         return $this->execRequest($url);
     }
@@ -167,8 +195,14 @@ class Api
      */
     public function doWatchProviderLookup($tmdbId, $mediaType)
     {
-        $url = $this->apiUrl . '/' . $mediaType . '/' . $tmdbId . '/watch/providers';
-        $url .= '?' . $this->apiKey;
+        $url = $this->apiUrl;
+        $url .= '/';
+        $url .= $mediaType;
+        $url .= '/';
+        $url .= $tmdbId;
+        $url .= '/watch/providers';
+        $url .= '?';
+        $url .= $this->apiKey;
         return $this->setCache($tmdbId, $url, '_WatchProviders');
     }
 
