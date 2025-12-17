@@ -41,7 +41,7 @@ class Search extends MdbBase
     {
         $results = array();
         $data = $this->api->doTextSearch(rawurlencode($searchString), $searchType);
-        if (empty($data) || empty($data->results)) {
+        if (empty($data) || empty((array) $data)) {
             return $results;
         }
         foreach ($data->results as $value) {
@@ -120,7 +120,7 @@ class Search extends MdbBase
     {
         $results = array();
         $data = $this->api->doExternalIdSearch($externalId, "imdb_id");
-        if (empty($data)) {
+        if (empty($data) || empty((array) $data)) {
             return $results;
         }
         $castData = (array) $data;
