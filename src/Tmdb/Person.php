@@ -57,7 +57,7 @@ class Person extends MdbBase
     {
         // Data request
         $data = $this->api->doLookup($this->tmdbID, "person");
-        if (empty($data)) {
+        if (empty($data) || empty((array) $data)) {
             return $this->results;
         }
         $this->tmdbId = isset($data->id) ? $data->id : null;
