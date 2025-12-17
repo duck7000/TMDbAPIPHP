@@ -343,7 +343,7 @@ class Tv extends MdbBase
         // seasons and episodes
         if ($this->totalSeasons > 0) {
             $seasonsData = $this->api->doTvSeasonsLookup($this->tmdbID, $this->totalSeasons);
-            if (!empty($seasonsData)) {
+            if (!empty($seasonsData) || !empty((array) $seasonsData)) {
                 $seasonCounter = 1;
                 while ($seasonCounter <= $this->totalSeasons) {
                     if (isset($seasonsData->{"season/$seasonCounter"}->episodes) &&
