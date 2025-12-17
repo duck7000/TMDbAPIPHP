@@ -42,7 +42,7 @@ class Trending extends MdbBase
     {
         // Data request
         $resultData = $this->api->doListTrendingLookup($type, $timeWindow);
-        if (empty($resultData->results)) {
+        if (empty($resultData) || empty((array) $resultData)) {
             return $this->trendingResults;
         }
         foreach ($resultData->results as $value) {
