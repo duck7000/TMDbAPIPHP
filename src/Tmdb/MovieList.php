@@ -43,7 +43,7 @@ class MovieList extends MdbBase
     {
         // Data request
         $resultData = $this->api->doListLookup("movie", "popular", 25);
-        if (empty($resultData)) {
+        if (empty($resultData) || empty((array) $resultData)) {
             return $this->popularResults;
         }
         foreach ($resultData as $data) {
@@ -72,7 +72,7 @@ class MovieList extends MdbBase
     {
         // Data request
         $resultDataUpcoming = $this->api->doListLookup("movie", "upcoming", 50);
-        if (empty($resultDataUpcoming)) {
+        if (empty($resultDataUpcoming) || empty((array) $resultDataUpcoming)) {
             return $this->upcomingResults;
         }
         foreach ($resultDataUpcoming as $data) {
@@ -105,7 +105,7 @@ class MovieList extends MdbBase
     {
         // Data request
         $topRatedData = $this->api->doListLookup("movie", "top_rated", 25);
-        if (empty($topRatedData)) {
+        if (empty($topRatedData) || empty((array) $topRatedData)) {
             return $this->topRatedResults;
         }
         foreach ($topRatedData as $data) {
@@ -134,7 +134,7 @@ class MovieList extends MdbBase
     {
         // Data request
         $nowPlayingData = $this->api->doListLookup("movie", "now_playing", 25);
-        if (empty($nowPlayingData)) {
+        if (empty($nowPlayingData) || empty((array) $nowPlayingData)) {
             return $this->nowPlayingResults;
         }
         foreach ($nowPlayingData as $data) {
