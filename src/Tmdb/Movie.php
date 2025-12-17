@@ -72,7 +72,7 @@ class Movie extends MdbBase
     {
         // Data request
         $data = $this->api->doLookup($this->tmdbID, "movie");
-        if (empty($data)) {
+        if (empty($data) || empty((array) $data)) {
             return $this->results;
         }
         $this->tmdbId = isset($data->id) ? $data->id : null;
