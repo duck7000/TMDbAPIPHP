@@ -43,7 +43,7 @@ class TvList extends MdbBase
     {
         // Data request
         $resultData = $this->api->doListLookup("tv", "popular", 25);
-        if (empty($resultData)) {
+        if (empty($resultData) || empty((array) $resultData)) {
             return $this->popularResults;
         }
         foreach ($resultData as $data) {
@@ -72,7 +72,7 @@ class TvList extends MdbBase
     {
         // Data request
         $topRatedData = $this->api->doListLookup("tv", "top_rated", 25);
-        if (empty($topRatedData)) {
+        if (empty($topRatedData) || empty((array) $topRatedData)) {
             return $this->topRatedResults;
         }
         foreach ($topRatedData as $data) {
@@ -101,7 +101,7 @@ class TvList extends MdbBase
     {
         // Data request
         $onTheAirData = $this->api->doListLookup("tv", "on_the_air", 25);
-        if (empty($onTheAirData)) {
+        if (empty($onTheAirData) || empty((array) $onTheAirData)) {
             return $this->onTheAirResults;
         }
         foreach ($onTheAirData as $data) {
@@ -130,7 +130,7 @@ class TvList extends MdbBase
     {
         // Data request
         $airingTodayData = $this->api->doListLookup("tv", "airing_today", 25);
-        if (empty($airingTodayData)) {
+        if (empty($airingTodayData) || empty((array) $airingTodayData)) {
             return $this->airingTodayResults;
         }
         foreach ($airingTodayData as $data) {
