@@ -40,7 +40,7 @@ class PersonList extends MdbBase
     {
         // Data request
         $resultData = $this->api->doListLookup("person", "popular", 25);
-        if (empty($resultData)) {
+        if (empty($resultData) || empty((array) $resultData)) {
             return $this->popularResults;
         }
         foreach ($resultData as $data) {
