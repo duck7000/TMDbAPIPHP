@@ -56,7 +56,12 @@ class MdbBase extends Config
         $this->config = $config ?: $this;
         $this->logger = empty($logger) ? new Logger($this->debug) : $logger;
         $this->cache = empty($cache) ? new Cache($this->config, $this->logger) : $cache;
-        $this->api = new Api($this->cache, $this->logger, $this->config);
+        if (!empty($this->config->apiKey)) {
+            $this->api = new Api($this->cache, $this->logger, $this->config);
+        } else {
+            $this->logger->error("Invalid API KEY in Config Class, probably empty?");
+            throw new \Exception();
+        }
     }
 
     /**
