@@ -156,7 +156,7 @@ class Api
         $queryUrl .= '&';
         $queryUrl .= 'page=';
         $firstReturnData = $this->execRequest($queryUrl . $page);
-        $totalPages = $firstReturnData->total_pages;
+        $totalPages = isset($firstReturnData->total_pages) ? $firstReturnData->total_pages : 1;
         if ($totalPages < $maxPages) {
             $maxPages = $totalPages;
         }
