@@ -72,12 +72,12 @@ class Api
     public function doExternalIdSearch($externalId, $externalSource)
     {
         $url = $this->apiUrl;
-        $url.= '/find/';
-        $url.= $externalId;
-        $url.= '?';
-        $url.= 'external_source=';
-        $url.= $externalSource;
-        $url.= $this->apiKey;
+        $url .= '/find/';
+        $url .= $externalId;
+        $url .= '?';
+        $url .= 'external_source=';
+        $url .= $externalSource;
+        $url .= $this->apiKey;
         return $this->execRequest($url);
     }
 
