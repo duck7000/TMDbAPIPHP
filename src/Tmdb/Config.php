@@ -71,11 +71,11 @@ class Config
      */
     public $apiVersion = '3';
 
-    /**
-     * TMDb API key (not bearer token!)
+ /**
+     * TMDb API bearer token (NOT API key!)
      * @var string
      */
-    public $apiKey = '';
+    public $apiToken = '';
 
     /**
      * TMDb API base image url

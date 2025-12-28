@@ -38,8 +38,8 @@ class Request
         curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($this->ch, CURLOPT_MAXREDIRS, 20);
         curl_setopt($this->ch, CURLOPT_HTTPHEADER, array(
-            'Accept: application/json',
-            'Content-type: application/json'
+            'Authorization: Bearer '. $this->config->apiToken,
+            'Accept: application/json'
         ));
     }
 

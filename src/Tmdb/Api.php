@@ -24,7 +24,6 @@ class Api
     private $logger;
     private $config;
     protected $apiUrl;
-    protected $apiKey;
 
     /**
      * API constructor.
@@ -38,7 +37,6 @@ class Api
         $this->logger = $logger;
         $this->config = $config;
         $this->apiUrl = $this->config->apiUrl . '/' . $this->config->apiVersion;
-        $this->apiKey = '&api_key=' . $this->config->apiKey;
     }
 
     /**
@@ -59,7 +57,6 @@ class Api
         $url .= 'include_adult=true';
         $url .= '&';
         $url .= 'page=1';
-        $url .= $this->apiKey;
         return $this->execRequest($url);
     }
 
@@ -77,7 +74,6 @@ class Api
         $url .= '?';
         $url .= 'external_source=';
         $url .= $externalSource;
-        $url .= $this->apiKey;
         return $this->execRequest($url);
     }
 
@@ -107,7 +103,6 @@ class Api
             $url .= 'recommendations,';
             $url .= 'videos';
         }
-        $url .= $this->apiKey;
         return $this->setCache($tmdbId, $url);
     }
 
@@ -131,7 +126,6 @@ class Api
             }
             $season++;
         }
-        $appendUrl .= $this->apiKey;
         return $this->setCache($tmdbTvId, $appendUrl, '_Seasons');
     }
 
@@ -152,8 +146,6 @@ class Api
         $queryUrl .= '/';
         $queryUrl .= $listName;
         $queryUrl .= '?';
-        $queryUrl .= $this->apiKey;
-        $queryUrl .= '&';
         $queryUrl .= 'page=';
         $firstReturnData = $this->execRequest($queryUrl . $page);
         $totalPages = isset($firstReturnData->total_pages) ? $firstReturnData->total_pages : 1;
@@ -182,8 +174,6 @@ class Api
         $url .= $type;
         $url .= '/';
         $url .= $timeWindow;
-        $url .= '?';
-        $url .= $this->apiKey;
         return $this->execRequest($url);
     }
 
@@ -201,9 +191,23 @@ class Api
         $url .= '/';
         $url .= $tmdbId;
         $url .= '/watch/providers';
-        $url .= '?';
-        $url .= $this->apiKey;
         return $this->setCache($tmdbId, $url, '_WatchProviders');
+    }
+
+    /**
+     * Get request for Collection, keyword and Company class
+     * @param int $tmdbId input TMDb ID
+     * @param string $type collection, keyword or company
+     * @return \stdClass
+     */
+    public function doTypeLookup($tmdbId, $type)
+    {
+        $url = $this->apiUrl;
+        $url .= '/';
+        $url .= $type;
+        $url .= '/';
+        $url .= $tmdbId;
+        return $this->execRequest($url);
     }
 
     /**
