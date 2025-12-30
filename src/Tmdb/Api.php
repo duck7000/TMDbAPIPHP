@@ -211,6 +211,41 @@ class Api
     }
 
     /**
+     * Get request for UserAccount class
+     * @param string|int $accountId input account Id
+     * @param string $listType account lookup list type: details, favorite, rated or watchlist
+     * @param string $mediaType account lookup media type: movies or tv
+     * @return \stdClass
+     */
+    public function doUserAccountListLookup($accountId, $listType, $mediaType = "movies")
+    {
+        $page = 1;
+        $Listresults = array();
+        $url = $this->apiUrl;
+        $url .= '/account/';
+        $url .= $accountId;
+        if ($listType == 'details') {
+            return $this->execRequest($url);
+        } else {
+            $url .= '/';
+            $url .= $listType;
+            $url .= '/';
+            $url .= $mediaType;
+            $url .= '?';
+            $url .= 'page=';
+            $firstData = $this->execRequest($url . $page);
+            $totalPages = isset($firstData->total_pages) ? $firstData->total_pages : 1;
+            while($page <= $totalPages) {
+                $requestData = $this->execRequest($url . $page);
+                $Listresults = array_merge($Listresults, $requestData->results);
+                $page++;
+                unset($requestData);
+            }
+            return $Listresults;
+        }
+    }
+
+    /**
      * Execute request
      * @param string $url
      * @return \stdClass
