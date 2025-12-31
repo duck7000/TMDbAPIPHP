@@ -21,12 +21,6 @@ class UserAccount extends MdbBase
 {
 
     protected $details = array();
-    protected $favoriteMovies = array();
-    protected $favoriteTv = array();
-    protected $ratedMovies = array();
-    protected $ratedTv = array();
-    protected $watchlistMovies = array();
-    protected $watchlistTv = array();
 
     /**
      * @param string|int $id TMDb account id
@@ -65,26 +59,7 @@ class UserAccount extends MdbBase
      */
     public function favoriteMovie()
     {
-        // Data request
-        $favoriteData = $this->api->doUserAccountListLookup($this->tmdbID, "favorite", "movies");
-        if (empty($favoriteData) || empty((array) $favoriteData)) {
-            return $this->favoriteMovies;
-        }
-        foreach ($favoriteData as $data) {
-            $this->favoriteMovies[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'title' => isset($data->title) ? $data->title : null,
-                'originalTitle' => isset($data->original_title) ? $data->original_title : null,
-                'releaseDate' => isset($data->release_date) ? $data->release_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->favoriteMovies;
+        return $this->userList($this->tmdbID, "favorite", "movies");
     }
 
     /**
@@ -93,26 +68,7 @@ class UserAccount extends MdbBase
      */
     public function favoriteTv()
     {
-        // Data request
-        $favoriteTvData = $this->api->doUserAccountListLookup($this->tmdbID, "favorite", "tv");
-        if (empty($favoriteTvData) || empty((array) $favoriteTvData)) {
-            return $this->favoriteTv;
-        }
-        foreach ($favoriteTvData as $data) {
-            $this->favoriteTv[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'name' => isset($data->name) ? $data->name : null,
-                'originalName' => isset($data->original_name) ? $data->original_name : null,
-                'firstAirDate' => isset($data->first_air_date) ? $data->first_air_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->favoriteTv;
+        return $this->userList($this->tmdbID, "favorite", "tv");
     }
 
     /**
@@ -121,26 +77,7 @@ class UserAccount extends MdbBase
      */
     public function ratedMovie()
     {
-        // Data request
-        $ratedData = $this->api->doUserAccountListLookup($this->tmdbID, "rated", "movies");
-        if (empty($ratedData) || empty((array) $ratedData)) {
-            return $this->ratedMovies;
-        }
-        foreach ($ratedData as $data) {
-            $this->ratedMovies[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'title' => isset($data->title) ? $data->title : null,
-                'originalTitle' => isset($data->original_title) ? $data->original_title : null,
-                'releaseDate' => isset($data->release_date) ? $data->release_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->ratedMovies;
+        return $this->userList($this->tmdbID, "rated", "movies");
     }
 
     /**
@@ -149,26 +86,7 @@ class UserAccount extends MdbBase
      */
     public function ratedTv()
     {
-        // Data request
-        $ratedTvData = $this->api->doUserAccountListLookup($this->tmdbID, "rated", "tv");
-        if (empty($ratedTvData) || empty((array) $ratedTvData)) {
-            return $this->ratedTv;
-        }
-        foreach ($ratedTvData as $data) {
-            $this->ratedTv[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'name' => isset($data->name) ? $data->name : null,
-                'originalName' => isset($data->original_name) ? $data->original_name : null,
-                'firstAirDate' => isset($data->first_air_date) ? $data->first_air_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->ratedTv;
+        return $this->userList($this->tmdbID, "rated", "tv");
     }
 
     /**
@@ -177,26 +95,7 @@ class UserAccount extends MdbBase
      */
     public function watchlistMovie()
     {
-        // Data request
-        $watchlistData = $this->api->doUserAccountListLookup($this->tmdbID, "watchlist", "movies");
-        if (empty($watchlistData) || empty((array) $watchlistData)) {
-            return $this->watchlistMovies;
-        }
-        foreach ($watchlistData as $data) {
-            $this->watchlistMovies[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'title' => isset($data->title) ? $data->title : null,
-                'originalTitle' => isset($data->original_title) ? $data->original_title : null,
-                'releaseDate' => isset($data->release_date) ? $data->release_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->watchlistMovies;
+        return $this->userList($this->tmdbID, "watchlist", "movies");
     }
 
     /**
@@ -205,25 +104,52 @@ class UserAccount extends MdbBase
      */
     public function watchlistTv()
     {
-        // Data request
-        $watchlistTvData = $this->api->doUserAccountListLookup($this->tmdbID, "watchlist", "tv");
-        if (empty($watchlistTvData) || empty((array) $watchlistTvData)) {
-            return $this->watchlistTv;
+        return $this->userList($this->tmdbID, "watchlist", "tv");
+    }
+
+    /**
+     * Fetch user movies, watchlist or tv shows
+     * @param string|int $id input account Id
+     * @param string $listType account lookup list type: details, favorite, rated, watchlist
+     * @param string $mediaType account lookup media type: movies, tv
+     * @return array
+     */
+    private function userList($id, $listType, $mediaType)
+    {
+        $results = array();
+        $listData = $this->api->doUserAccountListLookup($id, $listType, $mediaType);
+        if (empty($listData) || empty((array) $listData)) {
+            return $results;
         }
-        foreach ($watchlistTvData as $data) {
-            $this->watchlistTv[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'name' => isset($data->name) ? $data->name : null,
-                'originalName' => isset($data->original_name) ? $data->original_name : null,
-                'firstAirDate' => isset($data->first_air_date) ? $data->first_air_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
+        foreach ($listData as $data) {
+            if ($mediaType == 'movies') {
+                $results[] = array(
+                    'id' => isset($data->id) ? $data->id : null,
+                    'title' => isset($data->title) ? $data->title : null,
+                    'originalTitle' => isset($data->original_title) ? $data->original_title : null,
+                    'releaseDate' => isset($data->release_date) ? $data->release_date : null,
+                    'popularity' => isset($data->popularity) ? $data->popularity : null,
+                    'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
+                    'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
+                    'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
+                                                                   $this->config->posterImageSize .
+                                                                   $data->poster_path : null
+                );
+            } else {
+                $results[] = array(
+                    'id' => isset($data->id) ? $data->id : null,
+                    'name' => isset($data->name) ? $data->name : null,
+                    'originalName' => isset($data->original_name) ? $data->original_name : null,
+                    'firstAirDate' => isset($data->first_air_date) ? $data->first_air_date : null,
+                    'popularity' => isset($data->popularity) ? $data->popularity : null,
+                    'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
+                    'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
+                    'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
+                                                                   $this->config->posterImageSize .
+                                                                   $data->poster_path : null
+                );
+            }
         }
-        return $this->watchlistTv;
+        return $results;
     }
 }
