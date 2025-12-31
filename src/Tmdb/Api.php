@@ -246,6 +246,33 @@ class Api
     }
 
     /**
+     * Get request for Changes class
+     * @param string $mediaType account lookup media type: movie, tv, person
+     * @return \stdClass
+     */
+    public function doChangesLookup($mediaType = "movie")
+    {
+        $page = 1;
+        $ListChangesresults = array();
+        $url = $this->apiUrl;
+        $url .= '/';
+        $url .= $mediaType;
+        $url .= '/';
+        $url .= 'changes';
+        $url .= '?';
+        $url .= 'page=';
+        $firstData = $this->execRequest($url . $page);
+        $totalPages = isset($firstData->total_pages) ? $firstData->total_pages : 1;
+        while($page <= $totalPages) {
+            $requestData = $this->execRequest($url . $page);
+            $ListChangesresults = array_merge($ListChangesresults, $requestData->results);
+            $page++;
+            unset($requestData);
+        }
+        return $ListChangesresults;
+    }
+
+    /**
      * Execute request
      * @param string $url
      * @return \stdClass

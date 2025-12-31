@@ -28,3 +28,4 @@ require_once __DIR__ . '/src/Tmdb/Trending.php';
 require_once __DIR__ . '/src/Tmdb/Collection.php';
 require_once __DIR__ . '/src/Tmdb/Company.php';
 require_once __DIR__ . '/src/Tmdb/UserAccount.php';
+require_once __DIR__ . '/src/Tmdb/Changes.php';
