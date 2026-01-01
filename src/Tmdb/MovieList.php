@@ -20,11 +20,6 @@ use Psr\SimpleCache\CacheInterface;
 class MovieList extends MdbBase
 {
 
-    protected $popularResults = array();
-    protected $upcomingResults = array();
-    protected $topRatedResults = array();
-    protected $nowPlayingResults = array();
-
     /**
      * @param Config $config OPTIONAL override default config
      * @param Logger $cache OPTIONAL override the default logger with a custom one.
@@ -36,19 +31,66 @@ class MovieList extends MdbBase
     }
 
     /**
-     * Fetch popular movies
+     * Fetch list of popular movies
      * @return array
      */
-    public function popular()
+    public function popularMovie()
     {
-        // Data request
-        $resultData = $this->api->doListLookup("movie", "popular", 25);
+        return $this->fetchList("popular", 25);
+    }
+
+    /**
+     * Fetch list of top rated movies
+     * @return array
+     */
+    public function topRatedMovie()
+    {
+        return $this->fetchList("top_rated", 25);
+    }
+
+    /**
+     * Fetch list of now playing movies
+     * @return array
+     */
+    public function nowPlayingMovie()
+    {
+        return $this->fetchList("now_playing", 25);
+    }
+
+    /**
+     * Fetch list of upcoming movies sorted by release date ASC
+     * @return array
+     */
+    public function upcomingMovie()
+    {
+        $temp = array();
+        $upcomingResults = $this->fetchList("upcoming", 50);
+        foreach ($upcomingResults as $item) {
+            $releaseDate = isset($item["releaseDate"]) ? $item["releaseDate"] : null;
+            if(empty($releaseDate) || strtotime($releaseDate) < strtotime(date("Y-m-d"))) {
+                continue;
+            }
+            $temp[] = $item;
+        }
+        return $this->sortByDate($temp, "ASC");
+    }
+
+    /**
+     * Fetch list movies
+     * @param string $type list type: upcoming, now_playing, top_rated, popular
+     * @param int $pages how many pages of data to return
+     * @return array
+     */
+    private function fetchList($type, $pages)
+    {
+        $results = array();
+        $resultData = $this->api->doListLookup("movie", $type, $pages);
         if (empty($resultData) || empty((array) $resultData)) {
-            return $this->popularResults;
+            return $results;
         }
         foreach ($resultData as $data) {
             // results array
-            $this->popularResults[] = array(
+            $results[] = array(
                 'id' => isset($data->id) ? $data->id : null,
                 'title' => isset($data->title) ? $data->title : null,
                 'originalTitle' => isset($data->original_title) ? $data->original_title : null,
@@ -61,98 +103,7 @@ class MovieList extends MdbBase
                                                                $data->poster_path : null
             );
         }
-        return $this->popularResults;
-    }
-
-    /**
-     * Fetch popular movies
-     * @return array
-     */
-    public function upcoming()
-    {
-        // Data request
-        $resultDataUpcoming = $this->api->doListLookup("movie", "upcoming", 50);
-        if (empty($resultDataUpcoming) || empty((array) $resultDataUpcoming)) {
-            return $this->upcomingResults;
-        }
-        foreach ($resultDataUpcoming as $data) {
-            $releaseDate = isset($data->release_date) ? $data->release_date : null;
-            if(empty($releaseDate) || strtotime($releaseDate) < strtotime(date("Y-m-d"))) {
-                 continue;
-             }
-            // results array
-            $this->upcomingResults[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'title' => isset($data->title) ? $data->title : null,
-                'originalTitle' => isset($data->original_title) ? $data->original_title : null,
-                'releaseDate' => $releaseDate,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->sortByDate($this->upcomingResults, "ASC");
-    }
-
-    /**
-     * Fetch popular movies
-     * @return array
-     */
-    public function topRated()
-    {
-        // Data request
-        $topRatedData = $this->api->doListLookup("movie", "top_rated", 25);
-        if (empty($topRatedData) || empty((array) $topRatedData)) {
-            return $this->topRatedResults;
-        }
-        foreach ($topRatedData as $data) {
-            // results array
-            $this->topRatedResults[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'title' => isset($data->title) ? $data->title : null,
-                'originalTitle' => isset($data->original_title) ? $data->original_title : null,
-                'releaseDate' => isset($data->release_date) ? $data->release_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->topRatedResults;
-    }
-
-    /**
-     * Fetch popular movies
-     * @return array
-     */
-    public function nowPlaying()
-    {
-        // Data request
-        $nowPlayingData = $this->api->doListLookup("movie", "now_playing", 25);
-        if (empty($nowPlayingData) || empty((array) $nowPlayingData)) {
-            return $this->nowPlayingResults;
-        }
-        foreach ($nowPlayingData as $data) {
-            // results array
-            $this->nowPlayingResults[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'title' => isset($data->title) ? $data->title : null,
-                'originalTitle' => isset($data->original_title) ? $data->original_title : null,
-                'releaseDate' => isset($data->release_date) ? $data->release_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->nowPlayingResults;
+        return $results;
     }
 
     /**
