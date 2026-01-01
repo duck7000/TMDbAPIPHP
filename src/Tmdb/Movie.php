@@ -51,6 +51,7 @@ class Movie extends MdbBase
     protected $cast = array();
     protected $crew = array();
     protected $watchProviders = array();
+    protected $reviews = array();
 
     /**
      * @param string $id TMDb id
@@ -368,6 +369,20 @@ class Movie extends MdbBase
                 );
             }
         }
+        // reviews
+        if (isset($data->reviews->results) &&
+            is_array($data->reviews->results) &&
+            count($data->reviews->results) > 0
+           )
+        {
+            foreach ($data->reviews->results as $reviewObject) {
+                $this->reviews[] = array(
+                    'id' => isset($reviewObject->id) ? $reviewObject->id : null,
+                    'author' => isset($reviewObject->author) ? $reviewObject->author : null,
+                    'content' => isset($reviewObject->content) ? $reviewObject->content : null
+                );
+            }
+        }
         // results array
         $this->results = array(
             'id' => $this->tmdbId,
@@ -399,7 +414,8 @@ class Movie extends MdbBase
             'recommendations' => $this->recommendations,
             'cast' => $this->cast,
             'crew' => $this->crew,
-            'watchProviders' => $this->watchProviders
+            'watchProviders' => $this->watchProviders,
+            'reviews' => $this->reviews
         );
         return $this->results;
     }
