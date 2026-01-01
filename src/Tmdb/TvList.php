@@ -20,11 +20,6 @@ use Psr\SimpleCache\CacheInterface;
 class TvList extends MdbBase
 {
 
-    protected $popularResults = array();
-    protected $topRatedResults = array();
-    protected $onTheAirResults = array();
-    protected $airingTodayResults = array();
-
     /**
      * @param Config $config OPTIONAL override default config
      * @param Logger $cache OPTIONAL override the default logger with a custom one.
@@ -36,19 +31,57 @@ class TvList extends MdbBase
     }
 
     /**
-     * Fetch popular tv series
+     * Fetch list of popular tv shows
      * @return array
      */
-    public function popular()
+    public function popularTv()
     {
-        // Data request
-        $resultData = $this->api->doListLookup("tv", "popular", 25);
+        return $this->fetchList("popular", 25);
+    }
+
+    /**
+     * Fetch list of top rated tv shows
+     * @return array
+     */
+    public function topRatedTv()
+    {
+        return $this->fetchList("top_rated", 25);
+    }
+
+    /**
+     * Fetch list of on the air tv shows
+     * @return array
+     */
+    public function onTheAirTv()
+    {
+        return $this->fetchList("on_the_air", 25);
+    }
+
+    /**
+     * Fetch list of airing today tv shows
+     * @return array
+     */
+    public function airingTodayTv()
+    {
+        return $this->fetchList("airing_today", 25);
+    }
+
+    /**
+     * Fetch list tv series
+     * @param string $type list type: airing_today, on_the_air, top_rated, popular
+     * @param int $pages how many pages of data to return
+     * @return array
+     */
+    private function fetchList($type, $pages)
+    {
+        $results = array();
+        $resultData = $this->api->doListLookup("tv", $type, $pages);
         if (empty($resultData) || empty((array) $resultData)) {
-            return $this->popularResults;
+            return $results;
         }
         foreach ($resultData as $data) {
             // results array
-            $this->popularResults[] = array(
+            $results[] = array(
                 'id' => isset($data->id) ? $data->id : null,
                 'name' => isset($data->name) ? $data->name : null,
                 'originalName' => isset($data->original_name) ? $data->original_name : null,
@@ -61,93 +94,6 @@ class TvList extends MdbBase
                                                                $data->poster_path : null
             );
         }
-        return $this->popularResults;
-    }
-
-    /**
-     * Fetch top rated tv series
-     * @return array
-     */
-    public function topRated()
-    {
-        // Data request
-        $topRatedData = $this->api->doListLookup("tv", "top_rated", 25);
-        if (empty($topRatedData) || empty((array) $topRatedData)) {
-            return $this->topRatedResults;
-        }
-        foreach ($topRatedData as $data) {
-            // results array
-            $this->topRatedResults[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'name' => isset($data->name) ? $data->name : null,
-                'originalName' => isset($data->original_name) ? $data->original_name : null,
-                'firstAirDate' => isset($data->first_air_date) ? $data->first_air_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->topRatedResults;
-    }
-
-    /**
-     * Fetch on the air tv series
-     * @return array
-     */
-    public function onTheAir()
-    {
-        // Data request
-        $onTheAirData = $this->api->doListLookup("tv", "on_the_air", 25);
-        if (empty($onTheAirData) || empty((array) $onTheAirData)) {
-            return $this->onTheAirResults;
-        }
-        foreach ($onTheAirData as $data) {
-            // results array
-            $this->onTheAirResults[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'name' => isset($data->name) ? $data->name : null,
-                'originalName' => isset($data->original_name) ? $data->original_name : null,
-                'firstAirDate' => isset($data->first_air_date) ? $data->first_air_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->onTheAirResults;
-    }
-
-    /**
-     * Fetch airing today tv series
-     * @return array
-     */
-    public function airingToday()
-    {
-        // Data request
-        $airingTodayData = $this->api->doListLookup("tv", "airing_today", 25);
-        if (empty($airingTodayData) || empty((array) $airingTodayData)) {
-            return $this->airingTodayResults;
-        }
-        foreach ($airingTodayData as $data) {
-            // results array
-            $this->airingTodayResults[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'name' => isset($data->name) ? $data->name : null,
-                'originalName' => isset($data->original_name) ? $data->original_name : null,
-                'firstAirDate' => isset($data->first_air_date) ? $data->first_air_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
-            );
-        }
-        return $this->airingTodayResults;
+        return $results;
     }
 }
