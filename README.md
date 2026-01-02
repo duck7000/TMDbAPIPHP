@@ -2,7 +2,7 @@ TMDbAPIPHP
 =======
 
 PHP library for retrieving movie or tv show from TMDb API.<br>
-For this to work you need a tmdb API baerer token (not api key) so you have to create a account to get it<br>
+For this to work you need a tmdb API bearer token (not api key!) so you have to create a account to get it<br>
 
 All info is in the wiki pages<br>
 https://github.com/duck7000/TMDbAPIPHP/wiki
