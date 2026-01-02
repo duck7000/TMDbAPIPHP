@@ -53,6 +53,7 @@ class Tv extends MdbBase
     protected $networks = array();
     protected $seasonsEpisodes = array();
     protected $watchProviders = array();
+    protected $reviews = array();
 
     /**
      * @param string $id TMDb id
@@ -441,6 +442,20 @@ class Tv extends MdbBase
                 );
             }
         }
+        // reviews
+        if (isset($data->reviews->results) &&
+            is_array($data->reviews->results) &&
+            count($data->reviews->results) > 0
+           )
+        {
+            foreach ($data->reviews->results as $reviewObject) {
+                $this->reviews[] = array(
+                    'id' => isset($reviewObject->id) ? $reviewObject->id : null,
+                    'author' => isset($reviewObject->author) ? $reviewObject->author : null,
+                    'content' => isset($reviewObject->content) ? $reviewObject->content : null
+                );
+            }
+        }
         // results array
         $this->results = array(
             'id' => $this->tmdbId,
@@ -474,7 +489,8 @@ class Tv extends MdbBase
             'crew' => $this->crew,
             'networks' => $this->networks,
             'seasonsEpisodes' => $this->seasonsEpisodes,
-            'watchProviders' => $this->watchProviders
+            'watchProviders' => $this->watchProviders,
+            'reviews' => $this->reviews
         );
         return $this->results;
     }
