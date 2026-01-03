@@ -152,13 +152,7 @@ class Api
         if ($totalPages < $maxPages) {
             $maxPages = $totalPages;
         }
-        while($page <= $maxPages) {
-            $requestData = $this->execRequest($queryUrl . $page);
-            $results = array_merge($results, $requestData->results);
-            $page++;
-            unset($requestData);
-        }
-        return $results;
+        return $this->setCachePaging('', $queryUrl, 'ListClasses_' . $listName . '_' . $mediaType, $maxPages);
     }
 
     /**
@@ -235,13 +229,7 @@ class Api
             $url .= 'page=';
             $firstData = $this->execRequest($url . $page);
             $totalPages = isset($firstData->total_pages) ? $firstData->total_pages : 1;
-            while($page <= $totalPages) {
-                $requestData = $this->execRequest($url . $page);
-                $Listresults = array_merge($Listresults, $requestData->results);
-                $page++;
-                unset($requestData);
-            }
-            return $Listresults;
+            return $this->setCachePaging($accountId, $url, '_' . $listType . '_' . $mediaType, $totalPages);
         }
     }
 
@@ -269,13 +257,7 @@ class Api
         $url .= 'page=';
         $firstData = $this->execRequest($url . $page);
         $totalPages = isset($firstData->total_pages) ? $firstData->total_pages : 1;
-        while($page <= $totalPages) {
-            $requestData = $this->execRequest($url . $page);
-            $ListChangesresults = array_merge($ListChangesresults, $requestData->results);
-            $page++;
-            unset($requestData);
-        }
-        return $ListChangesresults;
+        return $this->setCachePaging('', $url, 'Changes_'. $mediaType, $totalPages);
     }
 
     /**
@@ -322,6 +304,34 @@ class Api
         $data = $this->execRequest($url);
         $this->cache->set($key, json_encode($data));
         return $data;
+    }
+
+    /**
+     * Caching return data when paging is needed
+     * @param string $id TMDb id (if available) from doChangesLookup(), doUserAccountListLookup() and doListLookup()
+     * @param string $url exec url from doChangesLookup(), doUserAccountListLookup() and doListLookup()
+     * @param string $ext cache filename extension
+     * @param int $ext total pages to fetch
+     * @return \stdClass
+     */
+    public function setCachePaging($id, $url, $ext, $totalPages)
+    {
+        $page = 1;
+        $results = array();
+        $key = $id . $ext . '.json';
+        $fromCache = $this->cache->get($key);
+
+        if ($fromCache != null) {
+            return json_decode($fromCache);
+        }
+        while($page <= $totalPages) {
+            $requestData = $this->execRequest($url . $page);
+            $results = array_merge($results, $requestData->results);
+            $page++;
+            unset($requestData);
+        }
+        $this->cache->set($key, json_encode($results));
+        return $results;
     }
 
 }
