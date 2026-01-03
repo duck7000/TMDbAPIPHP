@@ -189,9 +189,9 @@ class Api
     }
 
     /**
-     * Get request for Collection, keyword and Company class
+     * Get request for Collection and Company class
      * @param int $tmdbId input TMDb ID
-     * @param string $type collection, keyword or company
+     * @param string $type collection or company
      * @return \stdClass
      */
     public function doTypeLookup($tmdbId, $type)
@@ -201,7 +201,7 @@ class Api
         $url .= $type;
         $url .= '/';
         $url .= $tmdbId;
-        return $this->execRequest($url);
+        return $this->setCache($tmdbId, $url, '_' . $type);
     }
 
     /**
