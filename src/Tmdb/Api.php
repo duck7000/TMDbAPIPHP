@@ -168,7 +168,7 @@ class Api
         $url .= $type;
         $url .= '/';
         $url .= $timeWindow;
-        return $this->execRequest($url);
+        return $this->setCache('', $url, 'Trending_' . $type . '_'. $timeWindow);
     }
 
     /**
