@@ -248,9 +248,10 @@ class Api
     /**
      * Get request for Changes class
      * @param string $mediaType account lookup media type: movie, tv, person
+     * @param int $days number of days to return, max 14 days
      * @return \stdClass
      */
-    public function doChangesLookup($mediaType = "movie")
+    public function doChangesLookup($mediaType = "movie", $days = 1)
     {
         $page = 1;
         $ListChangesresults = array();
@@ -260,6 +261,11 @@ class Api
         $url .= '/';
         $url .= 'changes';
         $url .= '?';
+        if ($days > 1 && $days < 15) {
+            $url .= 'end_date=' . date("Y-m-d");
+            $url .= '&';
+            $url .= 'start_date=' . date('Y-m-d', strtotime('-' . $days . ' day', strtotime(date("Y-m-d"))));
+        }
         $url .= 'page=';
         $firstData = $this->execRequest($url . $page);
         $totalPages = isset($firstData->total_pages) ? $firstData->total_pages : 1;

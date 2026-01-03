@@ -31,41 +31,49 @@ class Changes extends MdbBase
     }
 
     /**
-     * Fetch movie ids that have been changed in the past 24 hours
+     * Fetch movie ids that have been changed
+     *      * @param int $days number of days in the past to return, max 14 days
+     * @note if parameter $days is omitted 1 day is returned
      * @return array
      */
-    public function fetchMovieChanges()
+    public function fetchMovieChanges($days = 1)
     {
-        return $this->fetchChanges("movie");
+        return $this->fetchChanges("movie", $days);
     }
 
     /**
-     * Fetch tv ids that have been changed in the past 24 hours
+     * Fetch tv ids that have been changed
+     * @param int $days number of days in the past to return, max 14 days
+     * @note if parameter $days is omitted 1 day is returned
      * @return array
      */
-    public function fetchTvChanges()
+    public function fetchTvChanges($days = 1)
     {
-        return $this->fetchChanges("tv");
+        return $this->fetchChanges("tv", $days);
     }
 
     /**
-     * Fetch person ids that have been changed in the past 24 hours
+     * Fetch person ids that have been changed
+     * @param int $days number of days in the past to return, max 14 days
+     * @note if parameter $days is omitted 1 day is returned
      * @return array
      */
-    public function fetchPersonChanges()
+    public function fetchPersonChanges($days = 1)
     {
-        return $this->fetchChanges("person");
+        return $this->fetchChanges("person", $days);
     }
 
     /**
      * Fetch ids that have been changed
      * @param string $mediaType movie, tv, person
+     * @param int $days number of days in the past to return, max 14 days
+     * @note if parameter $days is omitted 1 day is returned
      * @return array
      */
-    private function fetchChanges($mediaType)
+    private function fetchChanges($mediaType, $days)
     {
         $results = array();
-        $resultData = $this->api->doChangesLookup($mediaType);
+        $resultData = $this->api->doChangesLookup($mediaType, $days);
         if (empty($resultData) || empty((array) $resultData)) {
             return $this->movieResults;
         }
