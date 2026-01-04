@@ -219,7 +219,7 @@ class Api
         $url .= '/account/';
         $url .= $accountId;
         if ($listType == 'details') {
-            return $this->execRequest($url);
+            return $this->setCache($accountId, $url, '_' . $listType);
         } else {
             $url .= '/';
             $url .= $listType;
