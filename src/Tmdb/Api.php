@@ -139,7 +139,6 @@ class Api
     public function doListLookup($mediaType, $listName, $maxPages)
     {
         $page = 1;
-        $results = array();
         $queryUrl = $this->apiUrl;
         $queryUrl .= '/';
         $queryUrl .= $mediaType;
@@ -214,7 +213,6 @@ class Api
     public function doUserAccountListLookup($accountId, $listType, $mediaType = "movies")
     {
         $page = 1;
-        $Listresults = array();
         $url = $this->apiUrl;
         $url .= '/account/';
         $url .= $accountId;
@@ -244,7 +242,6 @@ class Api
     public function doChangesLookup($mediaType = "movie", $days = 1)
     {
         $page = 1;
-        $ListChangesresults = array();
         $url = $this->apiUrl;
         $url .= '/';
         $url .= $mediaType;
