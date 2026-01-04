@@ -21,6 +21,7 @@ class UserAccount extends MdbBase
 {
 
     protected $details = array();
+    protected $lists = array();
 
     /**
      * @param string|int $id TMDb account id
@@ -51,6 +52,33 @@ class UserAccount extends MdbBase
             'username' => isset($resultData->username) ? $resultData->username : null
         );
         return $this->details;
+    }
+
+    /**
+     * Get a users list of custom lists.
+     * @return array
+     */
+    public function lists()
+    {
+        // Data request
+        $resultListData = $this->api->doUserAccountListLookup($this->tmdbID, "lists");
+        if (empty($resultListData) || empty((array) $resultListData)) {
+            return $this->lists;
+        }
+        foreach ($resultListData as $resultData) {
+            $this->lists[] = array(
+                'id' => isset($resultData->id) ? $resultData->id : null,
+                'name' => isset($resultData->name) ? $resultData->name : null,
+                'description' => isset($resultData->description) ? $resultData->description : null,
+                'favoriteCount' => isset($resultData->favorite_count) ? $resultData->favorite_count : null,
+                'itemCount' => isset($resultData->item_count) ? $resultData->item_count : null,
+                'listType' => isset($resultData->list_type) ? $resultData->list_type : null,
+                'posterImgPath' => isset($resultData->poster_path) ? $this->config->baseImageUrl . '/' .
+                                                                     $this->config->posterImageSize .
+                                                                     $resultData->poster_path : null
+            );
+        }
+        return $this->lists;
     }
 
     /**

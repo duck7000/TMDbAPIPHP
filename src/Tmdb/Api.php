@@ -223,8 +223,10 @@ class Api
         } else {
             $url .= '/';
             $url .= $listType;
-            $url .= '/';
-            $url .= $mediaType;
+            if ($listType !== 'lists') {
+                $url .= '/';
+                $url .= $mediaType;
+            }
             $url .= '?';
             $url .= 'page=';
             $firstData = $this->execRequest($url . $page);
