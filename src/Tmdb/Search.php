@@ -17,6 +17,7 @@ class Search extends MdbBase
      * Search for titles matching text input search query
      * @param string $searchString input search string
      * @param string $searchType input search type, default: multi
+     * @param bool $includeAdult include adult results or not, default: true
      * Possible search Types:
      *      "tv"
      *      "movie"
@@ -33,14 +34,15 @@ class Search extends MdbBase
      *          [originalName] => Reasons
      *          [date] => 2022-06-23
      *          [type] => movie
+     *          [adult] => true
      *          [imgUrl] => https://image.tmdb.org/t/p/w185/7JW6WKINXbvGxAFRvDiaN4SMY2h.jpg
      *      )
      *  )
      */
-    public function textSearch($searchString, $searchType = "multi")
+    public function textSearch($searchString, $searchType = "multi", $includeAdult = true)
     {
         $results = array();
-        $data = $this->api->doTextSearch(rawurlencode($searchString), $searchType);
+        $data = $this->api->doTextSearch(rawurlencode($searchString), $searchType, $includeAdult);
         if (empty($data) || empty((array) $data)) {
             return $results;
         }
@@ -52,6 +54,7 @@ class Search extends MdbBase
                     'originalName' => isset($value->original_title) ? $value->original_title : null,
                     'date' => isset($value->release_date) ? $value->release_date : null,
                     'type' => isset($value->media_type) ? $value->media_type : 'movie',
+                    'adult' => isset($value->adult) ? $value->adult : false,
                     'imgUrl' => isset($value->poster_path) ? $this->config->baseImageUrl . '/' .
                                                              $this->config->posterImageSize .
                                                              $value->poster_path : null,
@@ -62,6 +65,7 @@ class Search extends MdbBase
                     'name' => isset($value->name) ? $value->name : null,
                     'originalName' => isset($value->original_name) ? $value->original_name : null,
                     'type' => isset($value->media_type) ? $value->media_type : 'person',
+                    'adult' => isset($value->adult) ? $value->adult : false,
                     'imgUrl' => isset($value->profile_path) ? $this->config->baseImageUrl . '/' .
                                                               $this->config->profileImageSize .
                                                               $value->profile_path : null,
@@ -72,6 +76,7 @@ class Search extends MdbBase
                     'name' => isset($value->name) ? $value->name : null,
                     'originalName' => isset($value->original_name) ? $value->original_name : null,
                     'type' => isset($value->media_type) ? $value->media_type : 'tv',
+                    'adult' => isset($value->adult) ? $value->adult : false,
                     'date' => isset($value->first_air_date) ? $value->first_air_date : null,
                     'imgUrl' => isset($value->poster_path) ? $this->config->baseImageUrl . '/' .
                                                              $this->config->posterImageSize .
@@ -96,6 +101,7 @@ class Search extends MdbBase
                     'id' => isset($value->id) ? $value->id : null,
                     'name' => isset($value->name) ? $value->name : null,
                     'originalName' => isset($value->original_name) ? $value->original_name : null,
+                    'adult' => isset($value->adult) ? $value->adult : false,
                     'imgUrl' => isset($value->poster_path) ? $this->config->baseImageUrl . '/' .
                                                              $this->config->posterImageSize .
                                                              $value->poster_path : null

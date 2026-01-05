@@ -43,9 +43,10 @@ class Api
      * Search request for TitleSearch class for text
      * @param string $searchInputString input search string
      * @param string $searchType like movie, tv, person or multi
+     * @param bool $includeAdult include adult results or not
      * @return \stdClass
      */
-    public function doTextSearch($searchInputString, $searchType)
+    public function doTextSearch($searchInputString, $searchType, $includeAdult)
     {
         $url = $this->apiUrl;
         $url .= '/search/';
@@ -54,7 +55,8 @@ class Api
         $url .= 'query=';
         $url .= $searchInputString;
         $url .= '&';
-        $url .= 'include_adult=true';
+        $url .= 'include_adult=';
+        $url .= $includeAdult ? 'true' : 'false';
         $url .= '&';
         $url .= 'page=1';
         return $this->execRequest($url);
