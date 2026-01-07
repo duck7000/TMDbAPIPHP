@@ -52,6 +52,7 @@ class Movie extends MdbBase
     protected $crew = array();
     protected $watchProviders = array();
     protected $reviews = array();
+    protected $watch;
 
     /**
      * @param string $id TMDb id
@@ -63,6 +64,7 @@ class Movie extends MdbBase
     {
         parent::__construct($config, $logger, $cache);
         $this->setid($id);
+        $this->watch = new WatchProviders();
     }
 
     /**
@@ -305,70 +307,7 @@ class Movie extends MdbBase
             }
         }
         // Watch providers for this movie
-        $watchProviderData = $this->api->doWatchProviderLookup($this->tmdbID, 'movie');
-        if (!empty($watchProviderData->results)) {
-            
-            $watchProviderResults = (array) $watchProviderData->results;
-            foreach ($watchProviderResults as $country => $providerItems) {
-                $buy = array();
-                $rent = array();
-                $flatrate = array();
-                // buy
-                if (isset($providerItems->buy) &&
-                    is_array($providerItems->buy) &&
-                    count($providerItems->buy) > 0
-                   )
-                {
-                    foreach ($providerItems->buy as $provider) {
-                        $buy[] = array(
-                            'providerId' => isset($provider->provider_id) ? $provider->provider_id : null,
-                            'providerName' => isset($provider->provider_name) ? $provider->provider_name : null,
-                            'imgLogoPath' => isset($provider->logo_path) ? $this->config->baseImageUrl . '/' .
-                                                                           $this->config->logoImageSize .
-                                                                           $provider->logo_path : null
-                        );
-                    }
-                }
-                //rent
-                if (isset($providerItems->rent) &&
-                    is_array($providerItems->rent) &&
-                    count($providerItems->rent) > 0
-                   )
-                {
-                    foreach ($providerItems->rent as $providerRent) {
-                        $rent[] = array(
-                            'providerId' => isset($providerRent->provider_id) ? $providerRent->provider_id : null,
-                            'providerName' => isset($providerRent->provider_name) ? $providerRent->provider_name : null,
-                            'imgLogoPath' => isset($providerRent->logo_path) ? $this->config->baseImageUrl . '/' .
-                                                                               $this->config->logoImageSize .
-                                                                               $providerRent->logo_path : null
-                        );
-                    }
-                }
-                // flatrate (stream)
-                if (isset($providerItems->flatrate) &&
-                    is_array($providerItems->flatrate) &&
-                    count($providerItems->flatrate) > 0
-                   )
-                {
-                    foreach ($providerItems->flatrate as $providerFlatrate) {
-                        $flatrate[] = array(
-                            'providerId' => isset($providerFlatrate->provider_id) ? $providerFlatrate->provider_id : null,
-                            'providerName' => isset($providerFlatrate->provider_name) ? $providerFlatrate->provider_name : null,
-                            'imgLogoPath' => isset($providerFlatrate->logo_path) ? $this->config->baseImageUrl . '/' .
-                                                                                   $this->config->logoImageSize .
-                                                                                   $providerFlatrate->logo_path : null
-                        );
-                    }
-                }
-                $this->watchProviders[$country] = array(
-                    'link' => isset($providerItems->link) ? $providerItems->link : null,
-                    'buy' => $buy,
-                    'rent' => $rent,
-                    'flatrate' => $flatrate
-                );
-            }
-        }
+        $this->watchProviders = $this->watch->fetchWatchProviders($this->tmdbID, 'movie');
         // reviews
         if (isset($data->reviews->results) &&
             is_array($data->reviews->results) &&
