@@ -112,7 +112,7 @@ class Search extends MdbBase
     }
 
     /**
-     * Search for titles matching imdb tt or nm number
+     * Translate IMDb tt or nm id to TMDb id
      * @param string $externalId input imdb id (complete number, all characters)
      * @return
      * Array(
@@ -122,7 +122,7 @@ class Search extends MdbBase
      *      )
      * )
      */
-    public function externalIdSearch($externalId)
+    public function imdbToTmdb($externalId)
     {
         $results = array();
         $data = $this->api->doExternalIdSearch($externalId, "imdb_id");
@@ -146,5 +146,4 @@ class Search extends MdbBase
         }
         return $results;
     }
-
 }
