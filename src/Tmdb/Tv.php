@@ -55,6 +55,7 @@ class Tv extends MdbBase
     protected $watchProviders = array();
     protected $reviews = array();
     protected $watch;
+    protected $seasons;
 
     /**
      * @param string $id TMDb id
@@ -67,6 +68,7 @@ class Tv extends MdbBase
         parent::__construct($config, $logger, $cache);
         $this->setid($id);
         $this->watch = new WatchProviders();
+        $this->seasons = new Seasons();
     }
 
     /**
@@ -345,40 +347,7 @@ class Tv extends MdbBase
         }
         // seasons and episodes
         if ($this->totalSeasons > 0) {
-            $seasonsData = $this->api->doTvSeasonsLookup($this->tmdbID, $this->totalSeasons);
-            if (!empty($seasonsData) || !empty((array) $seasonsData)) {
-                $seasonCounter = 1;
-                while ($seasonCounter <= $this->totalSeasons) {
-                    if (isset($seasonsData->{"season/$seasonCounter"}->episodes) &&
-                        is_array($seasonsData->{"season/$seasonCounter"}->episodes) &&
-                        count($seasonsData->{"season/$seasonCounter"}->episodes) > 0
-                       )
-                    {
-                        foreach ($seasonsData->{"season/$seasonCounter"}->episodes as $episode) {
-                            $this->seasonsEpisodes[$seasonCounter][$episode->episode_number] = array(
-                                'id' => isset($episode->id) ?
-                                              $episode->id : null,
-                                'name' => isset($episode->name) ?
-                                                $episode->name : null,
-                                'airdate' => isset($episode->air_date) ?
-                                                   $episode->air_date : null,
-                                'overview' => isset($episode->overview) ?
-                                                    $episode->overview : null,
-                                'runtime' => isset($episode->runtime) ?
-                                                   $episode->runtime : null,
-                                'seasonNumber' => isset($episode->season_number) ?
-                                                        $episode->season_number : null,
-                                'episodeNumber' => isset($episode->episode_number) ?
-                                                         $episode->episode_number : null,
-                                'imgStillPath' => isset($episode->still_path) ? $this->config->baseImageUrl . '/' .
-                                                                                $this->config->stillImageSize .
-                                                                                $episode->still_path : null
-                            );
-                        }
-                    }
-                    $seasonCounter++;
-                }
-            }
+            $this->seasonsEpisodes = $this->seasons->fetchSeasonsEpisodes($this->tmdbID, $this->totalSeasons);
         }
         // Watch providers for this movie
         $this->watchProviders = $this->watch->fetchWatchProviders($this->tmdbID, 'tv');
