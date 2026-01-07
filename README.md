@@ -21,10 +21,10 @@ Search For Title, person, tv, keyword, company and collection
 $Tmdb = new \Tmdb\Search();
 $results = $Tmdb->textSearch("1408");
 ```
-For externalId search:
+For translate imdb to tmdb:
 ```php
 $Tmdb = new \Tmdb\Search();
-$results = $Tmdb->externalIdSearch("tt0450385"); // tt and nm are supported
+$results = $Tmdb->imdbToTmdb("tt0450385"); // tt and nm are supported
 ```
 
 For Movie:
