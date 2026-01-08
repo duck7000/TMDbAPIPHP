@@ -21,7 +21,7 @@ Search For Title, person, tv, keyword, company and collection
 $Tmdb = new \Tmdb\Search();
 $results = $Tmdb->textSearch("1408");
 ```
-For translate imdb to tmdb:
+For convert imdbId to tmdbId:
 ```php
 $Tmdb = new \Tmdb\Search();
 $results = $Tmdb->imdbToTmdb("tt0450385"); // tt and nm are supported
