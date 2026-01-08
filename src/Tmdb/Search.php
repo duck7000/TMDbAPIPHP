@@ -112,38 +112,25 @@ class Search extends MdbBase
     }
 
     /**
-     * Translate IMDb tt or nm id to TMDb id
-     * @param string $externalId input imdb id (complete number, all characters)
-     * @return
-     * Array(
-     *      [0] => Array(
-     *          [id] => 3021
-     *          [type] => movie
-     *      )
-     * )
+     * Convert IMDb tt or nm id to TMDb id
+     * @param string $imdbId input imdb id (complete number, all characters)
+     * @return int|false
      */
-    public function imdbToTmdb($externalId)
+    public function imdbToTmdb($imdbId)
     {
-        $results = array();
-        $data = $this->api->doExternalIdSearch($externalId, "imdb_id");
-        if (empty($data) || empty((array) $data)) {
-            return $results;
-        }
+        $data = $this->api->doExternalIdSearch($imdbId, "imdb_id");
         $castData = (array) $data;
         foreach ($castData as $value) {
             if (empty($value)) {
                 continue;
             }
             foreach ($value as $key => $item) {
-                if (empty($item)) {
+                if (empty($item->id)) {
                     continue;
                 }
-                $results = array(
-                    'id' => isset($item->id) ? $item->id : null,
-                    'type' => isset($item->media_type) ? $item->media_type : null
-                );
+                return $item->id;
             }
         }
-        return $results;
+        return false;
     }
 }
