@@ -109,29 +109,6 @@ class Api
     }
 
     /**
-     * Get request for Tv seasons and episodes for fetchTvData()
-     * @param string $tmdbTvId input TMDb ID
-     * @return \stdClass
-     */
-    public function doTvSeasonsLookup($tmdbTvId, $totalSeasons)
-    {
-        $appendUrl = $this->apiUrl;
-        $appendUrl .= '/tv/';
-        $appendUrl .= $tmdbTvId;
-        $appendUrl .= '?';
-        $appendUrl .= 'append_to_response=';
-        $season = 1;
-        while($season <= $totalSeasons) {
-            $appendUrl .= 'season/' . $season;
-            if ($season < $totalSeasons) {
-                $appendUrl .= ',';
-            }
-            $season++;
-        }
-        return $this->setCache($tmdbTvId, $appendUrl, '_Seasons');
-    }
-
-    /**
      * Get request for Movie class list popular()
      * @param string $mediaType media type like movie, tv or person
      * @param string $listName list name like popular, upcoming, topRated
@@ -333,6 +310,57 @@ class Api
         }
         $this->cache->set($key, json_encode($results));
         return $results;
+    }
+
+    /**
+     * Caching return data for seasons and episodes
+     * @param int $id TMDb tv show id
+     * @param int $totalSeasons total number of seasons
+     * @return array()
+     */
+    public function setCacheSeasons($id, $totalSeasons)
+    {
+        $results = array();
+        $key = $id . '_Seasons.json';
+        $fromCache = $this->cache->get($key);
+
+        if ($fromCache != null) {
+            return json_decode($fromCache);
+        }
+        for ($currentStart = 1; $currentStart <= $totalSeasons; $currentStart += 20) {
+            $currentEnd = min($currentStart + 20 - 1, $totalSeasons);
+            $apiCallUrl = $this->doTvSeasonsLookup($id, $currentStart, $currentEnd);
+            $requestData = $this->execRequest($apiCallUrl);
+            $results = array_merge($results, (array) $requestData);
+            unset($requestData);
+        }
+        $results = (object) $results;
+        $this->cache->set($key, json_encode($results));
+        return $results;
+    }
+
+    /**
+     * Create API call url for setCacheSeasons()
+     * @param int $tmdbTvId TMDb tv show id
+     * @param int $startSeason start season number
+     * @param int $endSeason end season number
+     * @return string
+     */
+    private function doTvSeasonsLookup($tmdbTvId, $startSeason, $endSeason)
+    {
+        $appendUrl = $this->apiUrl;
+        $appendUrl .= '/tv/';
+        $appendUrl .= $tmdbTvId;
+        $appendUrl .= '?';
+        $appendUrl .= 'append_to_response=';
+        while($startSeason <= $endSeason) {
+            $appendUrl .= 'season/' . $startSeason;
+            if ($startSeason < $endSeason) {
+                $appendUrl .= ',';
+            }
+            $startSeason++;
+        }
+        return $appendUrl;
     }
 
 }

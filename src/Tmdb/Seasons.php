@@ -40,7 +40,7 @@ class Seasons extends MdbBase
     {
         $seasonResults = array();
         // Data request
-        $seasonsData = $this->api->doTvSeasonsLookup($id, $totalSeasons);
+        $seasonsData = $this->api->setCacheSeasons($id, $totalSeasons);
             if (!empty($seasonsData) || !empty((array) $seasonsData)) {
                 $seasonCounter = 1;
                 while ($seasonCounter <= $totalSeasons) {
