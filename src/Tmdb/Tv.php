@@ -28,9 +28,12 @@ class Tv extends MdbBase
     protected $overview = null;
     protected $originalLanguage = null;
     protected $firstAirDate = null;
+    protected $lastAirDate = null;
     protected $totalSeasons = 0;
+    protected $totalEpisodes = 0;
     protected $tagline = null;
     protected $status = null;
+    protected $type = null;
     protected $inProduction = false;
     protected $homepage = null;
     protected $popularity = null;
@@ -51,6 +54,7 @@ class Tv extends MdbBase
     protected $cast = array();
     protected $crew = array();
     protected $networks = array();
+    protected $seasonsData = array();
     protected $seasonsEpisodes = array();
     protected $watchProviders = array();
     protected $reviews = array();
@@ -89,9 +93,12 @@ class Tv extends MdbBase
         $this->overview = isset($data->overview) ? $data->overview : null;
         $this->originalLanguage = isset($data->original_language) ? $data->original_language : null;
         $this->firstAirDate = isset($data->first_air_date) ? $data->first_air_date : null;
+        $this->lastAirDate = isset($data->last_air_date) ? $data->last_air_date : null;
         $this->totalSeasons = isset($data->number_of_seasons) ? $data->number_of_seasons : 0;
+        $this->totalEpisodes = isset($data->number_of_episodes) ? $data->number_of_episodes : 0;
         $this->tagline = isset($data->tagline) ? $data->tagline : null;
         $this->status = isset($data->status) ? $data->status : null;
+        $this->type = isset($data->type) ? $data->type : null;
         $this->inProduction = isset($data->in_production) ? $data->in_production : false;
         $this->homepage = isset($data->homepage) ? $data->homepage : null;
         $this->popularity = isset($data->popularity) ? $data->popularity : null;
@@ -345,6 +352,27 @@ class Tv extends MdbBase
                 );
             }
         }
+        // Seasons, info about each season
+        if (isset($data->seasons) &&
+            is_array($data->seasons) &&
+            count($data->seasons) > 0
+           )
+        {
+            foreach ($data->seasons as $key => $seasonsObject) {
+                $this->seasonsData[$key + 1] = array(
+                    'id' => isset($seasonsObject->id) ? $seasonsObject->id : null,
+                    'name' => isset($seasonsObject->name) ? $seasonsObject->name : null,
+                    'overview' => isset($seasonsObject->overview) ? $seasonsObject->overview : null,
+                    'airdate' => isset($seasonsObject->air_date) ? $seasonsObject->air_date : null,
+                    'seasonNumber' => isset($seasonsObject->season_number) ? $seasonsObject->season_number : null,
+                    'episodeCount' => isset($seasonsObject->episode_count) ? $seasonsObject->episode_count : null,
+                    'voteAverage' => isset($seasonsObject->vote_average) ? $seasonsObject->vote_average : null,
+                    'posterImgPath' => isset($seasonsObject->poster_path) ? $this->config->baseImageUrl . '/' .
+                                                                            $this->config->posterImageSize .
+                                                                            $seasonsObject->poster_path : null
+                );
+            }
+        }
         // seasons and episodes
         if ($this->totalSeasons > 0) {
             $this->seasonsEpisodes = $this->seasons->fetchSeasonsEpisodes($this->tmdbID, $this->totalSeasons);
@@ -374,12 +402,15 @@ class Tv extends MdbBase
             'overview' => $this->overview,
             'originalLanguage' => $this->originalLanguage,
             'firstAirDate' => $this->firstAirDate,
+            'lastAirDate' => $this->lastAirDate,
             'totalSeasons' => $this->totalSeasons,
+            'totalEpisodes' => $this->totalEpisodes,
             'tagline' => $this->tagline,
             'originCountry' => $this->originCountry,
             'createdBy' => $this->createdBy,
             'spokenLanguages' => $this->spokenLanguages,
             'genres' => $this->genres,
+            'type' => $this->type,
             'status' => $this->status,
             'inProduction' => $this->inProduction,
             'homepage' => $this->homepage,
@@ -397,6 +428,7 @@ class Tv extends MdbBase
             'cast' => $this->cast,
             'crew' => $this->crew,
             'networks' => $this->networks,
+            'seasons' => $this->seasonsData,
             'seasonsEpisodes' => $this->seasonsEpisodes,
             'watchProviders' => $this->watchProviders,
             'reviews' => $this->reviews
