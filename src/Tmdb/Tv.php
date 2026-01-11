@@ -58,6 +58,7 @@ class Tv extends MdbBase
     protected $seasonsEpisodes = array();
     protected $watchProviders = array();
     protected $reviews = array();
+    protected $contentRatings = array();
     protected $watch;
     protected $seasons;
 
@@ -393,6 +394,34 @@ class Tv extends MdbBase
                 );
             }
         }
+        // content ratings
+        if (isset($data->content_ratings->results) &&
+            is_array($data->content_ratings->results) &&
+            count($data->content_ratings->results) > 0
+           )
+        {
+            foreach ($data->content_ratings->results as $contentRatingsObject) {
+                $descriptionResults = array();
+                if (isset($contentRatingsObject->descriptors) &&
+                    is_array($contentRatingsObject->descriptors) &&
+                    count($contentRatingsObject->descriptors) > 0
+                   )
+                {
+                    foreach ($contentRatingsObject->descriptors as $description) {
+                        if (!empty($description)) {
+                            $descriptionResults[] = $description;
+                        }
+                    }
+                }
+                $this->contentRatings[] = array(
+                    'iso3166' => isset($contentRatingsObject->iso_3166_1) ?
+                                       $contentRatingsObject->iso_3166_1 : null,
+                    'rating' => isset($contentRatingsObject->rating) ?
+                                      $contentRatingsObject->rating : null,
+                    'descriptors' => $descriptionResults
+                );
+            }
+        }
         // results array
         $this->results = array(
             'id' => $this->tmdbId,
@@ -417,6 +446,7 @@ class Tv extends MdbBase
             'popularity' => $this->popularity,
             'voteCount' => $this->voteCount,
             'voteAverage' => $this->voteAverage,
+            'contentRatings' => $this->contentRatings,
             'posterImgPath' => $this->posterImgPath,
             'productionCompanies' => $this->productionCompanies,
             'productionCountries' => $this->productionCountries,
