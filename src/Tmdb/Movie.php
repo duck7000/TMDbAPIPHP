@@ -28,6 +28,7 @@ class Movie extends MdbBase
     protected $overview = null;
     protected $originalLanguage = null;
     protected $releaseDate = null;
+    protected $releaseDates = array();
     protected $runtime = null;
     protected $tagline = null;
     protected $status = null;
@@ -322,6 +323,51 @@ class Movie extends MdbBase
                 );
             }
         }
+        // release dates (includes certifications)
+        if (isset($data->release_dates->results) &&
+            is_array($data->release_dates->results) &&
+            count($data->release_dates->results) > 0
+           )
+        {
+            foreach ($data->release_dates->results as $releaseDatesObject) {
+                $releaseDatesResults = array();
+                if (isset($releaseDatesObject->release_dates) &&
+                    is_array($releaseDatesObject->release_dates) &&
+                    count($releaseDatesObject->release_dates) > 0
+                   )
+                {
+                    foreach ($releaseDatesObject->release_dates as $release) {
+                        $descriptionResults = array();
+                        if (isset($release->descriptors) &&
+                            is_array($release->descriptors) &&
+                            count($release->descriptors) > 0
+                           )
+                        {
+                            foreach ($release->descriptors as $description) {
+                                if (!empty($description)) {
+                                    $descriptionResults[] = $description;
+                                }
+                            }
+                        }
+                        $releaseDatesResults[] = array(
+                            'certification' => isset($release->certification) ?
+                                                     $release->certification : null,
+                            'note' => isset($release->note) ? $release->note : null,
+                            'type' => isset($release->type) ? $this->typeIdToName($release->type) : 'Not set / not specified',
+                            'releaseDate' => isset($release->release_date) ?
+                                                   date("Y-m-d", strtotime($release->release_date)) : null,
+                            'descriptors' => $descriptionResults,
+                            'iso639' => isset($release->iso_639_1) ? $release->iso_639_1 : null
+                        );
+                    }
+                }
+                $this->releaseDates[] = array(
+                    'iso3166' => isset($releaseDatesObject->iso_3166_1) ?
+                                       $releaseDatesObject->iso_3166_1 : null,
+                    'releaseDates' => $releaseDatesResults
+                );
+            }
+        }
         // results array
         $this->results = array(
             'id' => $this->tmdbId,
@@ -331,6 +377,7 @@ class Movie extends MdbBase
             'overview' => $this->overview,
             'originalLanguage' => $this->originalLanguage,
             'releaseDate' => $this->releaseDate,
+            'releaseDates' => $this->releaseDates,
             'runtime' => $this->runtime,
             'tagline' => $this->tagline,
             'originCountry' => $this->originCountry,
@@ -357,5 +404,28 @@ class Movie extends MdbBase
             'reviews' => $this->reviews
         );
         return $this->results;
+    }
+
+    /**
+     * Get type name from id for release dates type field
+     * @param int $typeId
+     * @return string type name
+     */
+    private function typeIdToName($typeId)
+    {
+        $ar = array(
+            '0' => 'Not set / not specified',
+            '1' => 'Premiere',
+            '2' => 'Theatrical (limited)',
+            '3' => 'Theatrical',
+            '4' => 'Digital',
+            '5' => 'Physical',
+            '6' => 'Tv'
+        );
+        if (isset($ar[$typeId])) {
+            return $ar[$typeId];
+        } else {
+            return $ar[0];
+        }
     }
 }
