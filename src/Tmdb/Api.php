@@ -103,7 +103,10 @@ class Api
             $url .= 'images,';
             $url .= 'keywords,';
             $url .= 'recommendations,';
-            $url .= 'videos';
+            $url .= 'videos,';
+            $url .= 'content_ratings,';
+            $url .= 'release_dates,';
+            $url .= 'reviews';
         }
         return $this->setCache($tmdbId, $url);
     }
