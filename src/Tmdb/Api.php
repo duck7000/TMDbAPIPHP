@@ -137,7 +137,7 @@ class Api
     }
 
     /**
-     * Get request for Movie, Tv and Person class
+     * Get request for Trending class
      * @param string $type trending type: movie, person, tv, all (default: all)
      * @param string $timeWindow time window: day, week (default: week)
      * @return \stdClass
