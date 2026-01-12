@@ -23,6 +23,7 @@ class Movie extends MdbBase
     protected $results = array();
     protected $tmdbId = null;
     protected $imdbId = null;
+    protected $wikidataId = null;
     protected $title = null;
     protected $originalTitle = null;
     protected $overview = null;
@@ -80,6 +81,7 @@ class Movie extends MdbBase
         }
         $this->tmdbId = isset($data->id) ? $data->id : null;
         $this->imdbId = isset($data->imdb_id) ? $data->imdb_id : null;
+        $this->wikidataId = isset($data->external_ids->wikidata_id) ? $data->external_ids->wikidata_id : null;
         $this->title = isset($data->title) ? $data->title : null;
         $this->originalTitle = isset($data->original_title) ? $data->original_title : null;
         $this->overview = isset($data->overview) ? $data->overview : null;
@@ -433,6 +435,7 @@ class Movie extends MdbBase
         $this->results = array(
             'id' => $this->tmdbId,
             'imdbId' => $this->imdbId,
+            'wikidataId' => $this->wikidataId,
             'title' => $this->title,
             'originalTitle' => $this->originalTitle,
             'overview' => $this->overview,
