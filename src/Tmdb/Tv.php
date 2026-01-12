@@ -23,6 +23,8 @@ class Tv extends MdbBase
     protected $results = array();
     protected $tmdbId = null;
     protected $imdbId = null;
+    protected $wikidataId = null;
+    protected $tvdbId = null;
     protected $name = null;
     protected $originalName = null;
     protected $overview = null;
@@ -88,6 +90,8 @@ class Tv extends MdbBase
         }
         $this->tmdbId = isset($data->id) ? $data->id : null;
         $this->imdbId = isset($data->external_ids->imdb_id) ? $data->external_ids->imdb_id : null;
+        $this->wikidataId = isset($data->external_ids->wikidata_id) ? $data->external_ids->wikidata_id : null;
+        $this->tvdbId = isset($data->external_ids->tvdb_id) ? $data->external_ids->tvdb_id : null;
         $this->name = isset($data->name) ? $data->name : null;
         $this->originalName = isset($data->original_name) ? $data->original_name : null;
         $this->overview = isset($data->overview) ? $data->overview : null;
@@ -487,6 +491,8 @@ class Tv extends MdbBase
         $this->results = array(
             'id' => $this->tmdbId,
             'imdbId' => $this->imdbId,
+            'wikidataId' => $this->wikidataId,
+            'tvdbId' => $this->tvdbId,
             'name' => $this->name,
             'originalName' => $this->originalName,
             'overview' => $this->overview,
