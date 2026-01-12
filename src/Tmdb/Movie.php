@@ -32,6 +32,7 @@ class Movie extends MdbBase
     protected $runtime = null;
     protected $tagline = null;
     protected $status = null;
+    protected $adult = true;
     protected $revenue = null;
     protected $budget = null;
     protected $homepage = null;
@@ -87,6 +88,7 @@ class Movie extends MdbBase
         $this->runtime = isset($data->runtime) ? $data->runtime : null;
         $this->tagline = isset($data->tagline) ? $data->tagline : null;
         $this->status = isset($data->status) ? $data->status : null;
+        $this->adult = isset($data->adult) ? $data->adult : true;
         $this->revenue = isset($data->revenue) ? $data->revenue : null;
         $this->budget = isset($data->budget) ? $data->budget : null;
         $this->homepage = isset($data->homepage) ? $data->homepage : null;
@@ -443,6 +445,7 @@ class Movie extends MdbBase
             'spokenLanguages' => $this->spokenLanguages,
             'genres' => $this->genres,
             'status' => $this->status,
+            'adult' => $this->adult,
             'revenue' => $this->revenue,
             'budget' => $this->budget,
             'homepage' => $this->homepage,
