@@ -33,6 +33,7 @@ class Tv extends MdbBase
     protected $totalEpisodes = 0;
     protected $tagline = null;
     protected $status = null;
+    protected $adult = true;
     protected $type = null;
     protected $inProduction = false;
     protected $homepage = null;
@@ -97,6 +98,7 @@ class Tv extends MdbBase
         $this->totalEpisodes = isset($data->number_of_episodes) ? $data->number_of_episodes : 0;
         $this->tagline = isset($data->tagline) ? $data->tagline : null;
         $this->status = isset($data->status) ? $data->status : null;
+        $this->adult = isset($data->adult) ? $data->adult : true;
         $this->type = isset($data->type) ? $data->type : null;
         $this->inProduction = isset($data->in_production) ? $data->in_production : false;
         $this->homepage = isset($data->homepage) ? $data->homepage : null;
@@ -500,6 +502,7 @@ class Tv extends MdbBase
             'genres' => $this->genres,
             'type' => $this->type,
             'status' => $this->status,
+            'adult' => $this->adult,
             'inProduction' => $this->inProduction,
             'homepage' => $this->homepage,
             'popularity' => $this->popularity,
