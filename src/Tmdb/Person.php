@@ -23,6 +23,7 @@ class Person extends MdbBase
     protected $results = array();
     protected $tmdbId = null;
     protected $imdbId = null;
+    protected $wikidataId = null;
     protected $name = null;
     protected $adult = true;
     protected $gender = null;
@@ -63,6 +64,7 @@ class Person extends MdbBase
         }
         $this->tmdbId = isset($data->id) ? $data->id : null;
         $this->imdbId = isset($data->imdb_id) ? $data->imdb_id : null;
+        $this->wikidataId = isset($data->external_ids->wikidata_id) ? $data->external_ids->wikidata_id : null;
         $this->name = isset($data->name) ? $data->name : null;
         $this->adult = isset($data->adult) ? $data->adult : true;
         $this->gender = isset($data->gender) ? $this->genderIdToName($data->gender) : null;
@@ -136,6 +138,7 @@ class Person extends MdbBase
         $this->results = array(
             'id' => $this->tmdbId,
             'imdbId' => $this->imdbId,
+            'wikidataId' => $this->wikidataId,
             'name' => $this->name,
             'adult' => $this->adult,
             'gender' => $this->gender,

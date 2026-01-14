@@ -95,7 +95,8 @@ class Api
         $url .= '?';
         $url .= 'append_to_response=';
         if ($movieType === 'person') {
-            $url .= 'combined_credits';
+            $url .= 'combined_credits,';
+            $url .= 'external_ids';
         } else {
             $url .= 'alternative_titles,';
             $url .= 'credits,';
