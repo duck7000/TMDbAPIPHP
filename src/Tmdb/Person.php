@@ -24,6 +24,7 @@ class Person extends MdbBase
     protected $tmdbId = null;
     protected $imdbId = null;
     protected $name = null;
+    protected $adult = true;
     protected $gender = null;
     protected $biography = null;
     protected $birthday = null;
@@ -63,6 +64,7 @@ class Person extends MdbBase
         $this->tmdbId = isset($data->id) ? $data->id : null;
         $this->imdbId = isset($data->imdb_id) ? $data->imdb_id : null;
         $this->name = isset($data->name) ? $data->name : null;
+        $this->adult = isset($data->adult) ? $data->adult : true;
         $this->gender = isset($data->gender) ? $this->genderIdToName($data->gender) : null;
         $this->biography = isset($data->biography) ? $data->biography : null;
         $this->birthday = isset($data->birthday) ? $data->birthday : null;
@@ -135,6 +137,7 @@ class Person extends MdbBase
             'id' => $this->tmdbId,
             'imdbId' => $this->imdbId,
             'name' => $this->name,
+            'adult' => $this->adult,
             'gender' => $this->gender,
             'biography' => $this->biography,
             'birthday' => $this->birthday,
