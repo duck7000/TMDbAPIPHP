@@ -70,7 +70,7 @@ class Tv extends MdbBase
      * @param Logger $cache OPTIONAL override the default logger with a custom one.
      * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
-    public function __construct(string $id, ?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
+    public function __construct(string|int $id, ?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
         parent::__construct($config, $logger, $cache);
         $this->setid($id);
@@ -81,7 +81,7 @@ class Tv extends MdbBase
      * Fetch tv series data of a TMDb ID
      * @return array
      */
-    public function fetchTvData()
+    public function fetchTvData(): array
     {
         // Data request
         $data = $this->api->doLookup($this->tmdbID, "tv");
