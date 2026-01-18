@@ -62,7 +62,7 @@ class Movie extends MdbBase
      * @param Logger $cache OPTIONAL override the default logger with a custom one.
      * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
-    public function __construct(string $id, ?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
+    public function __construct(string|int $id, ?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
         parent::__construct($config, $logger, $cache);
         $this->setid($id);
@@ -72,7 +72,7 @@ class Movie extends MdbBase
      * Fetch movie data of a TMDb ID
      * @return array (see wiki for details)
      */
-    public function fetchMovieData()
+    public function fetchMovieData(): array
     {
         // Data request
         $data = $this->api->doLookup($this->tmdbID, "movie");
@@ -476,7 +476,7 @@ class Movie extends MdbBase
      * @param int $typeId
      * @return string type name
      */
-    private function typeIdToName($typeId)
+    private function typeIdToName(int $typeId): string
     {
         $ar = array(
             '0' => 'Not set / not specified',
