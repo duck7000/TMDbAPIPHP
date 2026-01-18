@@ -26,7 +26,7 @@ class Person extends MdbBase
     protected $wikidataId = null;
     protected $name = null;
     protected $adult = true;
-    protected $gender = null;
+    protected $gender;
     protected $biography = null;
     protected $birthday = null;
     protected $deathday = null;
@@ -45,7 +45,7 @@ class Person extends MdbBase
      * @param Logger $cache OPTIONAL override the default logger with a custom one.
      * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
-    public function __construct(string $id, ?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
+    public function __construct(string|int $id, ?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
         parent::__construct($config, $logger, $cache);
         $this->setid($id);
@@ -55,7 +55,7 @@ class Person extends MdbBase
      * Fetch person data of a TMDb ID
      * @return array (see wiki for details)
      */
-    public function fetchPersonData()
+    public function fetchPersonData(): array
     {
         // Data request
         $data = $this->api->doLookup($this->tmdbID, "person");
@@ -67,7 +67,7 @@ class Person extends MdbBase
         $this->wikidataId = isset($data->external_ids->wikidata_id) ? $data->external_ids->wikidata_id : null;
         $this->name = isset($data->name) ? $data->name : null;
         $this->adult = isset($data->adult) ? $data->adult : true;
-        $this->gender = isset($data->gender) ? $this->genderIdToName($data->gender) : null;
+        $this->gender = isset($data->gender) ? $this->genderIdToName($data->gender) : 'Not set / not specified';
         $this->biography = isset($data->biography) ? $data->biography : null;
         $this->birthday = isset($data->birthday) ? $data->birthday : null;
         $this->deathday = isset($data->deathday) ? $data->deathday : null;
@@ -162,7 +162,7 @@ class Person extends MdbBase
      * @param int $genderId
      * @return string gender name
      */
-    public function genderIdToName($genderId)
+    public function genderIdToName(int $genderId): string
     {
         $ar = array(
             '0' => 'Not set / not specified',
