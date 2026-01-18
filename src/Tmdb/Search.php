@@ -39,7 +39,7 @@ class Search extends MdbBase
      *      )
      *  )
      */
-    public function textSearch($searchString, $searchType = "multi", $includeAdult = true)
+    public function textSearch(string $searchString, string $searchType = "multi", bool $includeAdult = true): array
     {
         $results = array();
         $data = $this->api->doTextSearch(rawurlencode($searchString), $searchType, $includeAdult);
@@ -113,10 +113,10 @@ class Search extends MdbBase
 
     /**
      * Convert IMDb tt or nm id to TMDb id
-     * @param string $imdbId input imdb id (complete number, all characters)
+     * @param string $imdbId input imdb id (complete, incl tt or nm)
      * @return int|false
      */
-    public function imdbToTmdb($imdbId)
+    public function imdbToTmdb(string $imdbId): int|false
     {
         $data = $this->api->doExternalIdSearch($imdbId, "imdb_id");
         $castData = (array) $data;
