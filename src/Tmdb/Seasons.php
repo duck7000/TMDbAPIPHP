@@ -36,7 +36,7 @@ class Seasons extends MdbBase
      * @param int $totalSeasons number of seasons
      * @return array
      */
-    public function fetchSeasonsEpisodes($id, $totalSeasons)
+    public function fetchSeasonsEpisodes(int $id, int $totalSeasons): array
     {
         $seasonResults = array();
         // Data request
