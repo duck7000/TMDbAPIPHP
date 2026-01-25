@@ -285,7 +285,8 @@ class Movie extends MdbBase
                                                               $cast->profile_path : null,
                     'character' => isset($cast->character) ? $cast->character : null,
                     'castId' => isset($cast->cast_id) ? $cast->cast_id : null,
-                    'creditId' => isset($cast->credit_id) ? $cast->credit_id : null
+                    'creditId' => isset($cast->credit_id) ? $cast->credit_id : null,
+                    'order' => isset($cast->order) ? $cast->order : null
                 );
             }
         }
