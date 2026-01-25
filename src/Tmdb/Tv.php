@@ -315,7 +315,8 @@ class Tv extends MdbBase
                                                               $this->config->profileImageSize .
                                                               $cast->profile_path : null,
                     'character' => isset($cast->character) ? $cast->character : null,
-                    'creditId' => isset($cast->credit_id) ? $cast->credit_id : null
+                    'creditId' => isset($cast->credit_id) ? $cast->credit_id : null,
+                    'order' => isset($cast->order) ? $cast->order : null
                 );
             }
         }
