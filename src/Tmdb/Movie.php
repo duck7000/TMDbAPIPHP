@@ -194,24 +194,23 @@ class Movie extends MdbBase
                 );
             }
         }
-        // images (backdrops only)
-        if (isset($data->images->backdrops) &&
-            is_array($data->images->backdrops) &&
-            count($data->images->backdrops) > 0
-           )
-        {
-            foreach ($data->images->backdrops as $backdrop) {
-                $this->images[] = array(
-                    'imgPath' => isset($backdrop->file_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->backdropImageSize .
-                                                               $backdrop->file_path : null,
-                    'height' => isset($backdrop->height) ?
-                                      $backdrop->height : null,
-                    'width' => isset($backdrop->width) ?
-                                     $backdrop->width : null,
-                    'aspectRatio' => isset($backdrop->aspect_ratio) ?
-                                           $backdrop->aspect_ratio : null
-                );
+        // images
+        if (isset($data->images)) {
+            $imagesArray = (array) $data->images;
+            foreach ($imagesArray as $indexKey => $imageData) {
+                foreach ($imageData as $imageItem) {
+                    $this->images[$indexKey][] = array(
+                        'imgPath' => isset($imageItem->file_path) ? $this->config->baseImageUrl . '/' .
+                                                                   $this->config->backdropImageSize .
+                                                                   $imageItem->file_path : null,
+                        'height' => isset($imageItem->height) ?
+                                          $imageItem->height : null,
+                        'width' => isset($imageItem->width) ?
+                                         $imageItem->width : null,
+                        'aspectRatio' => isset($imageItem->aspect_ratio) ?
+                                               $imageItem->aspect_ratio : null
+                    );
+                }
             }
         }
         // keywords
