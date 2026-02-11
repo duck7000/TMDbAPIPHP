@@ -299,12 +299,12 @@ class Tv extends MdbBase
             }
         }
         // cast
-        if (isset($data->credits->cast) &&
-            is_array($data->credits->cast) &&
-            count($data->credits->cast) > 0
+        if (isset($data->aggregate_credits->cast) &&
+            is_array($data->aggregate_credits->cast) &&
+            count($data->aggregate_credits->cast) > 0
            )
         {
-            foreach ($data->credits->cast as $cast) {
+            foreach ($data->aggregate_credits->cast as $cast) {
                 $this->cast[] = array(
                     'id' => isset($cast->id) ? $cast->id : null,
                     'name' => isset($cast->name) ? $cast->name : null,
@@ -319,12 +319,12 @@ class Tv extends MdbBase
             }
         }
         // crew
-        if (isset($data->credits->crew) &&
-            is_array($data->credits->crew) &&
-            count($data->credits->crew) > 0
+        if (isset($data->aggregate_credits->crew) &&
+            is_array($data->aggregate_credits->crew) &&
+            count($data->aggregate_credits->crew) > 0
            )
         {
-            foreach ($data->credits->crew as $crew) {
+            foreach ($data->aggregate_credits->crew as $crew) {
                 $type = isset($crew->department) ? str_replace(' ', '', $crew->department) : 'Uncategorized';
                 $this->crew[$type][] = array(
                     'id' => isset($crew->id) ? $crew->id : null,
