@@ -418,6 +418,8 @@ class Tv extends MdbBase
         if (!empty($data->{"watch/providers"}->results)) {
             $watchProviderResults = (array) $data->{"watch/providers"}->results;
             foreach ($watchProviderResults as $watchindexKey => $providerItems) {
+                $providerItems = (array) $providerItems;
+                unset($providerItems["link"]);
                 foreach ($providerItems as $itemsKey => $provider) {
                     foreach ($provider as $providerData) {
                         $this->watchProviders[$watchindexKey][$itemsKey][] = array(
