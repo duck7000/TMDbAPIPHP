@@ -107,6 +107,7 @@ class Api
             $url .= 'videos,';
             $url .= 'content_ratings,';
             $url .= 'release_dates,';
+            $url .= 'watch/providers,';
             $url .= 'reviews';
         }
         return $this->setCache($tmdbId, $url);
