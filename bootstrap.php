@@ -30,4 +30,3 @@ require_once __DIR__ . '/src/Tmdb/Company.php';
 require_once __DIR__ . '/src/Tmdb/UserAccount.php';
 require_once __DIR__ . '/src/Tmdb/Changes.php';
 require_once __DIR__ . '/src/Tmdb/WatchProviders.php';
-require_once __DIR__ . '/src/Tmdb/Seasons.php';
