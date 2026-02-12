@@ -326,6 +326,20 @@ class Tv extends MdbBase
         {
             foreach ($data->aggregate_credits->crew as $crew) {
                 $type = isset($crew->department) ? str_replace(' ', '', $crew->department) : 'Uncategorized';
+                $jobs = array();
+                if (isset($crew->jobs) &&
+                    is_array($crew->jobs) &&
+                    count($crew->jobs) > 0
+                   )
+                {
+                    foreach ($crew->jobs as $job) {
+                        $jobs[] = array(
+                            'job' => isset($job->job) ? $job->job : null,
+                            'creditId' => isset($job->credit_id) ? $job->credit_id : null,
+                            'episodeCount' => isset($job->episode_count) ? $job->episode_count : null
+                        );
+                    }
+                }
                 $this->crew[$type][] = array(
                     'id' => isset($crew->id) ? $crew->id : null,
                     'name' => isset($crew->name) ? $crew->name : null,
@@ -333,8 +347,7 @@ class Tv extends MdbBase
                     'imgPath' => isset($crew->profile_path) ? $this->config->baseImageUrl . '/' .
                                                               $this->config->profileImageSize .
                                                               $crew->profile_path : null,
-                    'creditId' => isset($crew->credit_id) ? $crew->credit_id : null,
-                    'job' => isset($crew->job) ? $crew->job : null,
+                    'jobs' => $jobs
                 );
             }
         }
