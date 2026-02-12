@@ -296,7 +296,7 @@ class Movie extends MdbBase
            )
         {
             foreach ($data->credits->crew as $crew) {
-                $type = isset($crew->department) ? str_replace(' ', '', $crew->department) : 'Uncategorized';
+                $type = isset($crew->department) ? lcfirst(str_replace(' ', '', $crew->department)) : 'Uncategorized';
                 $this->crew[$type][] = array(
                     'id' => isset($crew->id) ? $crew->id : null,
                     'name' => isset($crew->name) ? $crew->name : null,
