@@ -119,7 +119,7 @@ class Person extends MdbBase
            )
         {
             foreach ($data->combined_credits->crew as $crew) {
-                $type = isset($crew->department) ? str_replace(' ', '', $crew->department) : 'Uncategorized';
+                $type = isset($crew->department) ? lcfirst(str_replace(' ', '', $crew->department)) : 'Uncategorized';
                 $this->crew[$type][] = array(
                     'id' => isset($crew->id) ? $crew->id : null,
                     'title' => isset($crew->title) ? $crew->title : null,
