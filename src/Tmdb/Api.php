@@ -100,6 +100,7 @@ class Api
         } else {
             $url .= 'alternative_titles,';
             $url .= 'credits,';
+            $url .= 'aggregate_credits,';
             $url .= 'external_ids,';
             $url .= 'images,';
             $url .= 'keywords,';
