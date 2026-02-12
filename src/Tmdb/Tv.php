@@ -325,7 +325,7 @@ class Tv extends MdbBase
            )
         {
             foreach ($data->aggregate_credits->crew as $crew) {
-                $type = isset($crew->department) ? str_replace(' ', '', $crew->department) : 'Uncategorized';
+                $type = isset($crew->department) ? lcfirst(str_replace(' ', '', $crew->department)) : 'Uncategorized';
                 $jobs = array();
                 if (isset($crew->jobs) &&
                     is_array($crew->jobs) &&
