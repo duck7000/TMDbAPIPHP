@@ -156,23 +156,6 @@ class Api
     }
 
     /**
-     * Get watch providers for Movie and Tv class
-     * @param string $tmdbId input TMDb ID
-     * @param string $mediaType input type like movie or tv
-     * @return \stdClass
-     */
-    public function doWatchProviderLookup($tmdbId, $mediaType)
-    {
-        $url = $this->apiUrl;
-        $url .= '/';
-        $url .= $mediaType;
-        $url .= '/';
-        $url .= $tmdbId;
-        $url .= '/watch/providers';
-        return $this->setCache($tmdbId, $url, '_WatchProviders');
-    }
-
-    /**
      * Get request for Collection and Company class
      * @param int $tmdbId input TMDb ID
      * @param string $type collection or company
