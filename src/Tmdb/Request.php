@@ -50,7 +50,6 @@ class Request
     {
         $this->responseHeaders = array();
         $this->page = curl_exec($this->ch);
-        curl_close($this->ch);
         if ($this->page !== false) {
             return true;
         }
