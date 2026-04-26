@@ -142,4 +142,10 @@ class Config
      */
     public $throwHttpExceptions = false;
 
+    /**
+     * Set curlopt_timout, this is the time out if curl has a connection problem
+     * @var int
+     */
+    public $curloptTimeout = 30;
+
 }

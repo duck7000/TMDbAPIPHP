@@ -34,7 +34,7 @@ class Request
         curl_setopt($this->ch, CURLOPT_HEADERFUNCTION, array(&$this, "callback_CURLOPT_HEADERFUNCTION"));
         curl_setopt($this->ch, CURLOPT_HEADER, false);
         curl_setopt($this->ch, CURLOPT_FAILONERROR, true);
-        curl_setopt($this->ch, CURLOPT_TIMEOUT, 90);
+        curl_setopt($this->ch, CURLOPT_TIMEOUT, $this->config->curloptTimeout);
         curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($this->ch, CURLOPT_MAXREDIRS, 20);
         curl_setopt($this->ch, CURLOPT_HTTPHEADER, array(
