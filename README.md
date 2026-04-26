@@ -29,18 +29,18 @@ $results = $Tmdb->imdbToTmdb("tt0450385"); // tt and nm are supported
 
 For Movie:
 ```php
-$title = new \Imdb\Movie("3021");
+$title = new \Tmdb\Movie("3021");
 $results = $title->fetchMovieData();
 ```
 For Person:
 ```php
-$person = new \Imdb\Person("3036");
+$person = new \Tmdb\Person("3036");
 $results = $person->fetchPersonData();
 ```
 
 For Tv series:
 ```php
-$tv = new \Imdb\Tv("66788");
+$tv = new \Tmdb\Tv("66788");
 $results = $tv->fetchTvData();
 ```
 
