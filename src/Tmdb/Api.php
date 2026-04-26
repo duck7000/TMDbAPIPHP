@@ -111,7 +111,7 @@ class Api
             $url .= 'watch/providers,';
             $url .= 'reviews';
         }
-        return $this->setCache($tmdbId, $url);
+        return $this->setCache($tmdbId, $url, '_' . $movieType);
     }
 
     /**
