@@ -76,7 +76,7 @@ class Api
         $url .= '?';
         $url .= 'external_source=';
         $url .= $externalSource;
-        return $this->execRequest($url);
+        return $this->setCache($externalId, $url, '_find');
     }
 
     /**
