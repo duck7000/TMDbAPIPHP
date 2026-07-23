@@ -355,6 +355,9 @@ class Movie extends MdbBase
                     count($releaseDatesObject->release_dates) > 0
                    )
                 {
+                if(empty($releaseDatesObject->release_dates[0]->certification)) {
+                    continue;
+                }
                     foreach ($releaseDatesObject->release_dates as $release) {
                         $descriptionResults = array();
                         if (isset($release->descriptors) &&
