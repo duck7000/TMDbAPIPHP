@@ -213,6 +213,7 @@ class Tv extends MdbBase
                 $this->alternativeTitles[] = array(
                     'iso3166' => isset($alternativeTitlesObject->iso_3166_1) ?
                                        $alternativeTitlesObject->iso_3166_1 : null,
+                    'countryName' => $this->countryCodeToName($alternativeTitlesObject->iso_3166_1),
                     'title' => isset($alternativeTitlesObject->title) ?
                                      $alternativeTitlesObject->title : null,
                     'type' => isset($alternativeTitlesObject->type) ?
