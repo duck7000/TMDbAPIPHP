@@ -305,6 +305,20 @@ class Tv extends MdbBase
            )
         {
             foreach ($data->aggregate_credits->cast as $cast) {
+                $roles = array();
+                if (isset($cast->roles) &&
+                    is_array($cast->roles) &&
+                    count($cast->roles) > 0
+                   )
+                {
+                    foreach ($cast->roles as $role) {
+                        $roles[] = array(
+                            'character' => isset($role->character) ? $role->character : null,
+                            'creditId' => isset($role->credit_id) ? $role->credit_id : null,
+                            'episodeCount' => isset($role->episode_count) ? $role->episode_count : null
+                        );
+                    }
+                }
                 $this->cast[] = array(
                     'id' => isset($cast->id) ? $cast->id : null,
                     'name' => isset($cast->name) ? $cast->name : null,
@@ -312,9 +326,7 @@ class Tv extends MdbBase
                     'imgPath' => isset($cast->profile_path) ? $this->config->baseImageUrl . '/' .
                                                               $this->config->profileImageSize .
                                                               $cast->profile_path : null,
-                    'character' => isset($cast->character) ? $cast->character : null,
-                    'creditId' => isset($cast->credit_id) ? $cast->credit_id : null,
-                    'order' => isset($cast->order) ? $cast->order : null
+                    'roles' => $roles
                 );
             }
         }
