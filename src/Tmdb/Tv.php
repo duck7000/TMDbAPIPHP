@@ -132,7 +132,7 @@ class Tv extends MdbBase
         {
             foreach ($data->origin_country as $country) {
                 if (!empty($country)) {
-                    $this->originCountry[] = $country;
+                    $this->originCountry[] = $this->countryCodeToName($country);
                 }
             }
         }
@@ -495,6 +495,7 @@ class Tv extends MdbBase
                 $this->contentRatings[] = array(
                     'iso3166' => isset($contentRatingsObject->iso_3166_1) ?
                                        $contentRatingsObject->iso_3166_1 : null,
+                    'countryName' => $this->countryCodeToName($contentRatingsObject->iso_3166_1),
                     'rating' => isset($contentRatingsObject->rating) ?
                                       $contentRatingsObject->rating : null,
                     'descriptors' => $descriptionResults
