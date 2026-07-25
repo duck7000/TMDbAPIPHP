@@ -121,7 +121,7 @@ class Movie extends MdbBase
         {
             foreach ($data->origin_country as $country) {
                 if (!empty($country)) {
-                    $this->originCountry[] = $country;
+                    $this->originCountry[] = $this->countryCodeToName($country);
                 }
             }
         }
@@ -187,6 +187,7 @@ class Movie extends MdbBase
                 $this->alternativeTitles[] = array(
                     'iso3166' => isset($alternativeTitlesObject->iso_3166_1) ?
                                        $alternativeTitlesObject->iso_3166_1 : null,
+                    'countryName' => $this->countryCodeToName($alternativeTitlesObject->iso_3166_1),
                     'title' => isset($alternativeTitlesObject->title) ?
                                      $alternativeTitlesObject->title : null,
                     'type' => isset($alternativeTitlesObject->type) ?
@@ -379,13 +380,14 @@ class Movie extends MdbBase
                             'releaseDate' => isset($release->release_date) ?
                                                    date("Y-m-d", strtotime($release->release_date)) : null,
                             'descriptors' => $descriptionResults,
-                            'iso639' => isset($release->iso_639_1) ? $release->iso_639_1 : null
+                            'iso639' => isset($release->iso_639_1) ? $release->iso_639_1 : null,
                         );
                     }
                 }
                 $this->releaseDates[] = array(
                     'iso3166' => isset($releaseDatesObject->iso_3166_1) ?
                                        $releaseDatesObject->iso_3166_1 : null,
+                    'countryName' => $this->countryCodeToName($releaseDatesObject->iso_3166_1),
                     'releaseDates' => $releaseDatesResults
                 );
             }
