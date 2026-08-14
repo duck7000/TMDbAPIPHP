@@ -1,0 +1,20 @@
+{
+    "name": "duck7000/tmdb-api-php",
+    "type": "library",
+    "description": "Library for retrieving film and tv information from TMDb (themoviedb) through API",
+    "keywords": ["TMDb", "themoviedb", "API", "PHP", "Movie"],
+    "homepage": "https://github.com/duck7000/TMDbAPIPHP",
+    "license": "GPL-2.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "Tmdb\\": "src/Tmdb"
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "psr/log": "^3.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "psr/simple-cache": "^1.0"
+    }
+}
