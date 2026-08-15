@@ -1,5 +1,5 @@
 {
-    "name": "duck7000/tmdb-api-php",
+    "name": "duck7000/themoviedb-api-php",
     "type": "library",
     "description": "Library for retrieving film and tv information from TMDb (themoviedb) through API",
     "keywords": ["TMDb", "themoviedb", "API", "PHP", "Movie"],
