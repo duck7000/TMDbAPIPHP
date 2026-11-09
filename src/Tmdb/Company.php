@@ -23,9 +23,9 @@ class Company extends MdbBase
     protected $companyResults = array();
 
     /**
-     * @param Config $config OPTIONAL override default config
-     * @param Logger $cache OPTIONAL override the default logger with a custom one.
-     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
+     * @param string Config $config OPTIONAL override default config
+     * @param string Logger $cache OPTIONAL override the default logger with a custom one.
+     * @param string CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
     public function __construct(?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
@@ -45,17 +45,26 @@ class Company extends MdbBase
             return $this->companyResults;
         }
         $this->companyResults = array(
-            'id' => isset($resultData->id) ? $resultData->id : null,
-            'name' => isset($resultData->name) ? $resultData->name : null,
-            'description' => isset($resultData->description) ? $resultData->description : null,
-            'headquarters' => isset($resultData->headquarters) ? $resultData->headquarters : null,
-            'homepage' => isset($resultData->homepage) ? $resultData->homepage : null,
-            'originCountry' => isset($resultData->origin_country) ? $resultData->origin_country : null,
-            'parentCompany' => isset($resultData->parent_company) ? $resultData->parent_company : null,
-            'logoImgUrl' => isset($resultData->logo_path) ? $this->config->baseImageUrl . '/' .
-                                                            $this->config->logoImageSize .
-                                                            $resultData->logo_path : null
+            'id' => isset($resultData->id) ?
+                          $resultData->id : null,
+            'name' => isset($resultData->name) ?
+                            $resultData->name : null,
+            'description' => isset($resultData->description) ?
+                                   $resultData->description : null,
+            'headquarters' => isset($resultData->headquarters) ?
+                                    $resultData->headquarters : null,
+            'homepage' => isset($resultData->homepage) ?
+                                $resultData->homepage : null,
+            'originCountry' => isset($resultData->origin_country) ?
+                                     $resultData->origin_country : null,
+            'parentCompany' => isset($resultData->parent_company) ?
+                                     $resultData->parent_company : null,
+            'logoImgUrl' => isset($resultData->logo_path) ?
+                                  $this->config->baseImageUrl . '/' .
+                                  $this->config->logoImageSize .
+                                  $resultData->logo_path : null
         );
         return $this->companyResults;
     }
+
 }

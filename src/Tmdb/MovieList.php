@@ -21,9 +21,9 @@ class MovieList extends MdbBase
 {
 
     /**
-     * @param Config $config OPTIONAL override default config
-     * @param Logger $cache OPTIONAL override the default logger with a custom one.
-     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
+     * @param string Config $config OPTIONAL override default config
+     * @param string Logger $cache OPTIONAL override the default logger with a custom one.
+     * @param string CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
     public function __construct(?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
@@ -31,7 +31,7 @@ class MovieList extends MdbBase
     }
 
     /**
-     * Fetch list of popular movies
+     * Get list of popular movies
      * @return array
      */
     public function popularMovie()
@@ -40,7 +40,7 @@ class MovieList extends MdbBase
     }
 
     /**
-     * Fetch list of top rated movies
+     * Get list of top rated movies
      * @return array
      */
     public function topRatedMovie()
@@ -49,7 +49,7 @@ class MovieList extends MdbBase
     }
 
     /**
-     * Fetch list of now playing movies
+     * Get list of now playing movies
      * @return array
      */
     public function nowPlayingMovie()
@@ -58,7 +58,7 @@ class MovieList extends MdbBase
     }
 
     /**
-     * Fetch list of upcoming movies sorted by release date ASC
+     * Get list of upcoming movies sorted by release date ASC
      * @return array
      */
     public function upcomingMovie()
@@ -76,7 +76,7 @@ class MovieList extends MdbBase
     }
 
     /**
-     * Fetch list movies
+     * Fetch data for lists
      * @param string $type list type: upcoming, now_playing, top_rated, popular
      * @param int $pages how many pages of data to return
      * @return array
@@ -91,16 +91,24 @@ class MovieList extends MdbBase
         foreach ($resultData as $data) {
             // results array
             $results[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'title' => isset($data->title) ? $data->title : null,
-                'originalTitle' => isset($data->original_title) ? $data->original_title : null,
-                'releaseDate' => isset($data->release_date) ? $data->release_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
+                'id' => isset($data->id) ?
+                              $data->id : null,
+                'title' => isset($data->title) ?
+                                 $data->title : null,
+                'originalTitle' => isset($data->original_title) ?
+                                         $data->original_title : null,
+                'releaseDate' => isset($data->release_date) ?
+                                       $data->release_date : null,
+                'popularity' => isset($data->popularity) ?
+                                      $data->popularity : null,
+                'voteCount' => isset($data->vote_count) ?
+                                     $data->vote_count : null,
+                'voteAverage' => isset($data->vote_average) ?
+                                       $data->vote_average : null,
+                'posterImgPath' => isset($data->poster_path) ?
+                                         $this->config->baseImageUrl . '/' .
+                                         $this->config->posterImageSize .
+                                         $data->poster_path : null
             );
         }
         return $results;
@@ -108,9 +116,9 @@ class MovieList extends MdbBase
 
     /**
      * Sort $results array by date
-     * @param array $array
+     * @param array $array to sort array
      * @param string $sortOrder ASC or DESC
-     * @return sorted array
+     * @return array
      */
     protected function sortByDate($array, $sortOrder)
     {
@@ -123,7 +131,6 @@ class MovieList extends MdbBase
                 if ($ad == $bd) {
                 return 0;
                 }
-
                 return $ad > $bd ? -1 : 1;
             });
         } else {
@@ -135,10 +142,10 @@ class MovieList extends MdbBase
                 if ($ad == $bd) {
                 return 0;
                 }
-
                 return $ad < $bd ? -1 : 1;
             });
         }
         return $array;
     }
+
 }

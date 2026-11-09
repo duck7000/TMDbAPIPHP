@@ -58,9 +58,9 @@ class Movie extends MdbBase
 
     /**
      * @param string $id TMDb id
-     * @param Config $config OPTIONAL override default config
-     * @param Logger $cache OPTIONAL override the default logger with a custom one.
-     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
+     * @param string Config $config OPTIONAL override default config
+     * @param string Logger $cache OPTIONAL override the default logger with a custom one.
+     * @param string CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
     public function __construct(string|int $id, ?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
@@ -70,7 +70,8 @@ class Movie extends MdbBase
 
     /**
      * Fetch movie data of a TMDb ID
-     * @return array (see wiki for details)
+     * @see wikipages for details
+     * @return array
      */
     public function fetchMovieData(): array
     {
@@ -79,27 +80,46 @@ class Movie extends MdbBase
         if (empty($data) || empty((array) $data)) {
             return $this->results;
         }
-        $this->tmdbId = isset($data->id) ? $data->id : null;
-        $this->imdbId = isset($data->imdb_id) ? $data->imdb_id : null;
-        $this->wikidataId = isset($data->external_ids->wikidata_id) ? $data->external_ids->wikidata_id : null;
-        $this->title = isset($data->title) ? $data->title : null;
-        $this->originalTitle = isset($data->original_title) ? $data->original_title : null;
-        $this->overview = isset($data->overview) ? $data->overview : null;
-        $this->originalLanguage = isset($data->original_language) ? $data->original_language : null;
-        $this->releaseDate = isset($data->release_date) ? $data->release_date : null;
-        $this->runtime = isset($data->runtime) ? $data->runtime : null;
-        $this->tagline = isset($data->tagline) ? $data->tagline : null;
-        $this->status = isset($data->status) ? $data->status : null;
-        $this->adult = isset($data->adult) ? $data->adult : true;
-        $this->revenue = isset($data->revenue) ? $data->revenue : null;
-        $this->budget = isset($data->budget) ? $data->budget : null;
-        $this->homepage = isset($data->homepage) ? $data->homepage : null;
-        $this->popularity = isset($data->popularity) ? $data->popularity : null;
-        $this->voteCount = isset($data->vote_count) ? $data->vote_count : null;
-        $this->voteAverage = isset($data->vote_average) ? $data->vote_average : null;
-        $this->posterImgPath = isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                           $this->config->posterImageSize .
-                                                           $data->poster_path : null;
+        $this->tmdbId = isset($data->id) ?
+                              $data->id : null;
+        $this->imdbId = isset($data->imdb_id) ?
+                              $data->imdb_id : null;
+        $this->wikidataId = isset($data->external_ids->wikidata_id) ?
+                                  $data->external_ids->wikidata_id : null;
+        $this->title = isset($data->title) ?
+                             $data->title : null;
+        $this->originalTitle = isset($data->original_title) ?
+                                     $data->original_title : null;
+        $this->overview = isset($data->overview) ?
+                                $data->overview : null;
+        $this->originalLanguage = isset($data->original_language) ?
+                                        $data->original_language : null;
+        $this->releaseDate = isset($data->release_date) ?
+                                   $data->release_date : null;
+        $this->runtime = isset($data->runtime) ?
+                               $data->runtime : null;
+        $this->tagline = isset($data->tagline) ?
+                               $data->tagline : null;
+        $this->status = isset($data->status) ?
+                              $data->status : null;
+        $this->adult = isset($data->adult) ?
+                             $data->adult : true;
+        $this->revenue = isset($data->revenue) ?
+                               $data->revenue : null;
+        $this->budget = isset($data->budget) ?
+                              $data->budget : null;
+        $this->homepage = isset($data->homepage) ?
+                                $data->homepage : null;
+        $this->popularity = isset($data->popularity) ?
+                                  $data->popularity : null;
+        $this->voteCount = isset($data->vote_count) ?
+                                 $data->vote_count : null;
+        $this->voteAverage = isset($data->vote_average) ?
+                                   $data->vote_average : null;
+        $this->posterImgPath = isset($data->poster_path) ?
+                                     $this->config->baseImageUrl . '/' .
+                                     $this->config->posterImageSize .
+                                     $data->poster_path : null;
         // genres
         if (isset($data->genres) &&
             is_array($data->genres) &&
@@ -108,8 +128,10 @@ class Movie extends MdbBase
         {
             foreach ($data->genres as $genreObject) {
                 $this->genres[] = array(
-                    'id' => isset($genreObject->id) ? $genreObject->id : null,
-                    'name' => isset($genreObject->name) ? $genreObject->name : null
+                    'id' => isset($genreObject->id) ?
+                                  $genreObject->id : null,
+                    'name' => isset($genreObject->name) ?
+                                    $genreObject->name : null
                 );
             }
         }
@@ -133,13 +155,16 @@ class Movie extends MdbBase
         {
             foreach ($data->production_companies as $companyObject) {
                 $this->productionCompanies[] = array(
-                    'id' => isset($companyObject->id) ? $companyObject->id : null,
-                    'name' => isset($companyObject->name) ? $companyObject->name : null,
+                    'id' => isset($companyObject->id) ?
+                                  $companyObject->id : null,
+                    'name' => isset($companyObject->name) ?
+                                    $companyObject->name : null,
                     'originCountry' => isset($companyObject->origin_country) ?
                                              $companyObject->origin_country : null,
-                    'LogoImgPath' => isset($companyObject->logo_path) ? $this->config->baseImageUrl . '/' .
-                                                                        $this->config->logoImageSize .
-                                                                        $companyObject->logo_path : null
+                    'LogoImgPath' => isset($companyObject->logo_path) ?
+                                           $this->config->baseImageUrl . '/' .
+                                           $this->config->logoImageSize .
+                                           $companyObject->logo_path : null
                 );
             }
         }
@@ -175,7 +200,6 @@ class Movie extends MdbBase
                 );
             }
         }
-
         //additional input methods
         // alternative titles (also known as)
         if (isset($data->alternative_titles->titles) &&
@@ -201,9 +225,10 @@ class Movie extends MdbBase
             foreach ($imagesArray as $indexKey => $imageData) {
                 foreach ($imageData as $imageItem) {
                     $this->images[$indexKey][] = array(
-                        'imgPath' => isset($imageItem->file_path) ? $this->config->baseImageUrl . '/' .
-                                                                   $this->config->backdropImageSize .
-                                                                   $imageItem->file_path : null,
+                        'imgPath' => isset($imageItem->file_path) ?
+                                           $this->config->baseImageUrl . '/' .
+                                           $this->config->backdropImageSize .
+                                           $imageItem->file_path : null,
                         'height' => isset($imageItem->height) ?
                                           $imageItem->height : null,
                         'width' => isset($imageItem->width) ?
@@ -236,14 +261,21 @@ class Movie extends MdbBase
            )
         {
             foreach ($data->videos->results as $videos) {
-                $type = isset($videos->type) ? str_replace(' ', '', $videos->type) : 'Uncategorized';
+                $type = isset($videos->type) ?
+                              str_replace(' ', '', $videos->type) : 'Uncategorized';
                 $this->videos[$type][] = array(
-                    'tmdbVideoId' => isset($videos->id) ? $videos->id : null,
-                    'name' => isset($videos->name) ? $videos->name : null,
-                    'key' => isset($videos->key) ? $videos->key : null,
-                    'site' => isset($videos->site) ? $videos->site : null,
-                    'size' => isset($videos->size) ? $videos->size : null,
-                    'official' => isset($videos->official) ? $videos->official : false
+                    'tmdbVideoId' => isset($videos->id) ?
+                                           $videos->id : null,
+                    'name' => isset($videos->name) ?
+                                    $videos->name : null,
+                    'key' => isset($videos->key) ?
+                                   $videos->key : null,
+                    'site' => isset($videos->site) ?
+                                    $videos->site : null,
+                    'size' => isset($videos->size) ?
+                                    $videos->size : null,
+                    'official' => isset($videos->official) ?
+                                        $videos->official : false
                 );
             }
         }
@@ -255,17 +287,20 @@ class Movie extends MdbBase
         {
             foreach ($data->recommendations->results as $recommendation) {
                 $this->recommendations[] = array(
-                    'id' => isset($recommendation->id) ? $recommendation->id : null,
-                    'title' => isset($recommendation->title) ? $recommendation->title : null,
+                    'id' => isset($recommendation->id) ?
+                                  $recommendation->id : null,
+                    'title' => isset($recommendation->title) ?
+                                     $recommendation->title : null,
                     'originalTitle' => isset($recommendation->original_title) ?
                                              $recommendation->original_title : null,
                     'releaseDate' => isset($recommendation->release_date) ?
                                            $recommendation->release_date : null,
                     'voteAverage' => isset($recommendation->vote_average) ?
                                            $recommendation->vote_average : null,
-                    'imgPath' => isset($recommendation->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                                       $this->config->posterImageSize .
-                                                                       $recommendation->poster_path : null,
+                    'imgPath' => isset($recommendation->poster_path) ?
+                                       $this->config->baseImageUrl . '/' .
+                                       $this->config->posterImageSize .
+                                       $recommendation->poster_path : null
                 );
             }
         }
@@ -277,16 +312,24 @@ class Movie extends MdbBase
         {
             foreach ($data->credits->cast as $cast) {
                 $this->cast[] = array(
-                    'id' => isset($cast->id) ? $cast->id : null,
-                    'name' => isset($cast->name) ? $cast->name : null,
-                    'originalName' => isset($cast->original_name) ? $cast->original_name : null,
-                    'imgPath' => isset($cast->profile_path) ? $this->config->baseImageUrl . '/' .
-                                                              $this->config->profileImageSize .
-                                                              $cast->profile_path : null,
-                    'character' => isset($cast->character) ? $cast->character : null,
-                    'castId' => isset($cast->cast_id) ? $cast->cast_id : null,
-                    'creditId' => isset($cast->credit_id) ? $cast->credit_id : null,
-                    'order' => isset($cast->order) ? $cast->order : null
+                    'id' => isset($cast->id) ?
+                                  $cast->id : null,
+                    'name' => isset($cast->name) ?
+                                    $cast->name : null,
+                    'originalName' => isset($cast->original_name) ?
+                                            $cast->original_name : null,
+                    'imgPath' => isset($cast->profile_path) ?
+                                       $this->config->baseImageUrl . '/' .
+                                       $this->config->profileImageSize .
+                                       $cast->profile_path : null,
+                    'character' => isset($cast->character) ?
+                                         $cast->character : null,
+                    'castId' => isset($cast->cast_id) ?
+                                      $cast->cast_id : null,
+                    'creditId' => isset($cast->credit_id) ?
+                                        $cast->credit_id : null,
+                    'order' => isset($cast->order) ?
+                                     $cast->order : null
                 );
             }
         }
@@ -297,16 +340,23 @@ class Movie extends MdbBase
            )
         {
             foreach ($data->credits->crew as $crew) {
-                $type = isset($crew->department) ? lcfirst(str_replace(' ', '', $crew->department)) : 'Uncategorized';
+                $type = isset($crew->department) ?
+                              lcfirst(str_replace(' ', '', $crew->department)) : 'Uncategorized';
                 $this->crew[$type][] = array(
-                    'id' => isset($crew->id) ? $crew->id : null,
-                    'name' => isset($crew->name) ? $crew->name : null,
-                    'originalName' => isset($crew->original_name) ? $crew->original_name : null,
-                    'imgPath' => isset($crew->profile_path) ? $this->config->baseImageUrl . '/' .
-                                                              $this->config->profileImageSize .
-                                                              $crew->profile_path : null,
-                    'creditId' => isset($crew->credit_id) ? $crew->credit_id : null,
-                    'job' => isset($crew->job) ? $crew->job : null,
+                    'id' => isset($crew->id) ?
+                                  $crew->id : null,
+                    'name' => isset($crew->name) ?
+                                    $crew->name : null,
+                    'originalName' => isset($crew->original_name) ?
+                                            $crew->original_name : null,
+                    'imgPath' => isset($crew->profile_path) ?
+                                       $this->config->baseImageUrl . '/' .
+                                       $this->config->profileImageSize .
+                                       $crew->profile_path : null,
+                    'creditId' => isset($crew->credit_id) ?
+                                        $crew->credit_id : null,
+                    'job' => isset($crew->job) ?
+                                   $crew->job : null
                 );
             }
         }
@@ -319,11 +369,14 @@ class Movie extends MdbBase
                 foreach ($providerItems as $itemsKey => $provider) {
                     foreach ($provider as $providerData) {
                         $this->watchProviders[$watchindexKey][$itemsKey][] = array(
-                            'providerId' => isset($providerData->provider_id) ? $providerData->provider_id : null,
-                            'providerName' => isset($providerData->provider_name) ? $providerData->provider_name : null,
-                            'imgLogoPath' => isset($providerData->logo_path) ? $this->config->baseImageUrl . '/' .
-                                                                               $this->config->logoImageSize .
-                                                                               $providerData->logo_path : null
+                            'providerId' => isset($providerData->provider_id) ?
+                                                  $providerData->provider_id : null,
+                            'providerName' => isset($providerData->provider_name) ?
+                                                    $providerData->provider_name : null,
+                            'imgLogoPath' => isset($providerData->logo_path) ?
+                                                   $this->config->baseImageUrl . '/' .
+                                                   $this->config->logoImageSize .
+                                                   $providerData->logo_path : null
                         );
                     }
                 }
@@ -337,9 +390,12 @@ class Movie extends MdbBase
         {
             foreach ($data->reviews->results as $reviewObject) {
                 $this->reviews[] = array(
-                    'id' => isset($reviewObject->id) ? $reviewObject->id : null,
-                    'author' => isset($reviewObject->author) ? $reviewObject->author : null,
-                    'content' => isset($reviewObject->content) ? $reviewObject->content : null
+                    'id' => isset($reviewObject->id) ?
+                                  $reviewObject->id : null,
+                    'author' => isset($reviewObject->author) ?
+                                      $reviewObject->author : null,
+                    'content' => isset($reviewObject->content) ?
+                                       $reviewObject->content : null
                 );
             }
         }
@@ -375,12 +431,15 @@ class Movie extends MdbBase
                         $releaseDatesResults[] = array(
                             'certification' => isset($release->certification) ?
                                                      $release->certification : null,
-                            'note' => isset($release->note) ? $release->note : null,
-                            'type' => isset($release->type) ? $this->typeIdToName($release->type) : 'Not set / not specified',
+                            'note' => isset($release->note) ?
+                                            $release->note : null,
+                            'type' => isset($release->type) ?
+                                            $this->typeIdToName($release->type) : 'Not set / not specified',
                             'releaseDate' => isset($release->release_date) ?
                                                    date("Y-m-d", strtotime($release->release_date)) : null,
                             'descriptors' => $descriptionResults,
-                            'iso639' => isset($release->iso_639_1) ? $release->iso_639_1 : null,
+                            'iso639' => isset($release->iso_639_1) ?
+                                              $release->iso_639_1 : null
                         );
                     }
                 }
@@ -433,9 +492,9 @@ class Movie extends MdbBase
     }
 
     /**
-     * Get type name from id for release dates type field
+     * Convert Id to name text for release dates type field
      * @param int $typeId
-     * @return string type name
+     * @return string
      */
     private function typeIdToName(int $typeId): string
     {
@@ -454,4 +513,5 @@ class Movie extends MdbBase
             return $ar[0];
         }
     }
+
 }
