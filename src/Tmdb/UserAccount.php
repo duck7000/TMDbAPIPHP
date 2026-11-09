@@ -25,9 +25,9 @@ class UserAccount extends MdbBase
 
     /**
      * @param string|int $id TMDb account id
-     * @param Config $config OPTIONAL override default config
-     * @param Logger $cache OPTIONAL override the default logger with a custom one.
-     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
+     * @param string Config $config OPTIONAL override default config
+     * @param string Logger $cache OPTIONAL override the default logger with a custom one.
+     * @param string CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
     public function __construct(string $id, ?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
@@ -47,9 +47,12 @@ class UserAccount extends MdbBase
             return $this->details;
         }
         $this->details = array(
-            'id' => isset($resultData->id) ? $resultData->id : null,
-            'name' => isset($resultData->name) ? $resultData->name : null,
-            'username' => isset($resultData->username) ? $resultData->username : null
+            'id' => isset($resultData->id) ?
+                          $resultData->id : null,
+            'name' => isset($resultData->name) ?
+                            $resultData->name : null,
+            'username' => isset($resultData->username) ?
+                                $resultData->username : null
         );
         return $this->details;
     }
@@ -67,22 +70,29 @@ class UserAccount extends MdbBase
         }
         foreach ($resultListData as $resultData) {
             $this->lists[] = array(
-                'id' => isset($resultData->id) ? $resultData->id : null,
-                'name' => isset($resultData->name) ? $resultData->name : null,
-                'description' => isset($resultData->description) ? $resultData->description : null,
-                'favoriteCount' => isset($resultData->favorite_count) ? $resultData->favorite_count : null,
-                'itemCount' => isset($resultData->item_count) ? $resultData->item_count : null,
-                'listType' => isset($resultData->list_type) ? $resultData->list_type : null,
-                'posterImgPath' => isset($resultData->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                                     $this->config->posterImageSize .
-                                                                     $resultData->poster_path : null
+                'id' => isset($resultData->id) ?
+                              $resultData->id : null,
+                'name' => isset($resultData->name) ?
+                                $resultData->name : null,
+                'description' => isset($resultData->description) ?
+                                       $resultData->description : null,
+                'favoriteCount' => isset($resultData->favorite_count) ?
+                                         $resultData->favorite_count : null,
+                'itemCount' => isset($resultData->item_count) ?
+                                     $resultData->item_count : null,
+                'listType' => isset($resultData->list_type) ?
+                                    $resultData->list_type : null,
+                'posterImgPath' => isset($resultData->poster_path) ?
+                                         $this->config->baseImageUrl . '/' .
+                                         $this->config->posterImageSize .
+                                         $resultData->poster_path : null
             );
         }
         return $this->lists;
     }
 
     /**
-     * Fetch user favorite movies
+     * Get user favorite movies
      * @return array
      */
     public function favoriteMovie()
@@ -91,7 +101,7 @@ class UserAccount extends MdbBase
     }
 
     /**
-     * Fetch user favorite tv shows
+     * Get user favorite tv shows
      * @return array
      */
     public function favoriteTv()
@@ -100,7 +110,7 @@ class UserAccount extends MdbBase
     }
 
     /**
-     * Fetch user rated movies
+     * Get user rated movies
      * @return array
      */
     public function ratedMovie()
@@ -109,7 +119,7 @@ class UserAccount extends MdbBase
     }
 
     /**
-     * Fetch user rated tv shows
+     * Get user rated tv shows
      * @return array
      */
     public function ratedTv()
@@ -118,7 +128,7 @@ class UserAccount extends MdbBase
     }
 
     /**
-     * Fetch user watchlist movies
+     * Get user watchlist movies
      * @return array
      */
     public function watchlistMovie()
@@ -127,7 +137,7 @@ class UserAccount extends MdbBase
     }
 
     /**
-     * Fetch user watchlist tv shows
+     * Get user watchlist tv shows
      * @return array
      */
     public function watchlistTv()
@@ -136,7 +146,7 @@ class UserAccount extends MdbBase
     }
 
     /**
-     * Fetch user movies, watchlist or tv shows
+     * Fetch data for user lists
      * @param string|int $id input account Id
      * @param string $listType account lookup list type: details, favorite, rated, watchlist
      * @param string $mediaType account lookup media type: movies, tv
@@ -152,32 +162,49 @@ class UserAccount extends MdbBase
         foreach ($listData as $data) {
             if ($mediaType == 'movies') {
                 $results[] = array(
-                    'id' => isset($data->id) ? $data->id : null,
-                    'title' => isset($data->title) ? $data->title : null,
-                    'originalTitle' => isset($data->original_title) ? $data->original_title : null,
-                    'releaseDate' => isset($data->release_date) ? $data->release_date : null,
-                    'popularity' => isset($data->popularity) ? $data->popularity : null,
-                    'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                    'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                    'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                                   $this->config->posterImageSize .
-                                                                   $data->poster_path : null
+                    'id' => isset($data->id) ?
+                                  $data->id : null,
+                    'title' => isset($data->title) ?
+                                     $data->title : null,
+                    'originalTitle' => isset($data->original_title) ?
+                                             $data->original_title : null,
+                    'releaseDate' => isset($data->release_date) ?
+                                           $data->release_date : null,
+                    'popularity' => isset($data->popularity) ?
+                                          $data->popularity : null,
+                    'voteCount' => isset($data->vote_count) ?
+                                         $data->vote_count : null,
+                    'voteAverage' => isset($data->vote_average) ?
+                                           $data->vote_average : null,
+                    'posterImgPath' => isset($data->poster_path) ?
+                                             $this->config->baseImageUrl . '/' .
+                                             $this->config->posterImageSize .
+                                             $data->poster_path : null
                 );
             } else {
                 $results[] = array(
-                    'id' => isset($data->id) ? $data->id : null,
-                    'name' => isset($data->name) ? $data->name : null,
-                    'originalName' => isset($data->original_name) ? $data->original_name : null,
-                    'firstAirDate' => isset($data->first_air_date) ? $data->first_air_date : null,
-                    'popularity' => isset($data->popularity) ? $data->popularity : null,
-                    'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                    'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                    'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                                   $this->config->posterImageSize .
-                                                                   $data->poster_path : null
+                    'id' => isset($data->id) ?
+                                  $data->id : null,
+                    'name' => isset($data->name) ?
+                                    $data->name : null,
+                    'originalName' => isset($data->original_name) ?
+                                            $data->original_name : null,
+                    'firstAirDate' => isset($data->first_air_date) ?
+                                            $data->first_air_date : null,
+                    'popularity' => isset($data->popularity) ?
+                                          $data->popularity : null,
+                    'voteCount' => isset($data->vote_count) ?
+                                         $data->vote_count : null,
+                    'voteAverage' => isset($data->vote_average) ?
+                                           $data->vote_average : null,
+                    'posterImgPath' => isset($data->poster_path) ?
+                                             $this->config->baseImageUrl . '/' .
+                                             $this->config->posterImageSize .
+                                             $data->poster_path : null
                 );
             }
         }
         return $results;
     }
+
 }

@@ -21,9 +21,9 @@ class TvList extends MdbBase
 {
 
     /**
-     * @param Config $config OPTIONAL override default config
-     * @param Logger $cache OPTIONAL override the default logger with a custom one.
-     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
+     * @param string Config $config OPTIONAL override default config
+     * @param string Logger $cache OPTIONAL override the default logger with a custom one.
+     * @param string CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
     public function __construct(?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
@@ -31,7 +31,7 @@ class TvList extends MdbBase
     }
 
     /**
-     * Fetch list of popular tv shows
+     * Get list of popular tv shows
      * @return array
      */
     public function popularTv()
@@ -40,7 +40,7 @@ class TvList extends MdbBase
     }
 
     /**
-     * Fetch list of top rated tv shows
+     * Get list of top rated tv shows
      * @return array
      */
     public function topRatedTv()
@@ -49,7 +49,7 @@ class TvList extends MdbBase
     }
 
     /**
-     * Fetch list of on the air tv shows
+     * Get list of on the air tv shows
      * @return array
      */
     public function onTheAirTv()
@@ -58,7 +58,7 @@ class TvList extends MdbBase
     }
 
     /**
-     * Fetch list of airing today tv shows
+     * Get list of airing today tv shows
      * @return array
      */
     public function airingTodayTv()
@@ -67,7 +67,7 @@ class TvList extends MdbBase
     }
 
     /**
-     * Fetch list tv series
+     * Fetch data for lists tv series
      * @param string $type list type: airing_today, on_the_air, top_rated, popular
      * @param int $pages how many pages of data to return
      * @return array
@@ -82,18 +82,27 @@ class TvList extends MdbBase
         foreach ($resultData as $data) {
             // results array
             $results[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'name' => isset($data->name) ? $data->name : null,
-                'originalName' => isset($data->original_name) ? $data->original_name : null,
-                'firstAirDate' => isset($data->first_air_date) ? $data->first_air_date : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
-                'voteCount' => isset($data->vote_count) ? $data->vote_count : null,
-                'voteAverage' => isset($data->vote_average) ? $data->vote_average : null,
-                'posterImgPath' => isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->posterImageSize .
-                                                               $data->poster_path : null
+                'id' => isset($data->id) ?
+                              $data->id : null,
+                'name' => isset($data->name) ?
+                                $data->name : null,
+                'originalName' => isset($data->original_name) ?
+                                        $data->original_name : null,
+                'firstAirDate' => isset($data->first_air_date) ?
+                                        $data->first_air_date : null,
+                'popularity' => isset($data->popularity) ?
+                                      $data->popularity : null,
+                'voteCount' => isset($data->vote_count) ?
+                                     $data->vote_count : null,
+                'voteAverage' => isset($data->vote_average) ?
+                                       $data->vote_average : null,
+                'posterImgPath' => isset($data->poster_path) ?
+                                         $this->config->baseImageUrl . '/' .
+                                         $this->config->posterImageSize .
+                                         $data->poster_path : null
             );
         }
         return $results;
     }
+
 }
