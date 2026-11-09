@@ -66,9 +66,9 @@ class Tv extends MdbBase
 
     /**
      * @param string $id TMDb id
-     * @param Config $config OPTIONAL override default config
-     * @param Logger $cache OPTIONAL override the default logger with a custom one.
-     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
+     * @param string Config $config OPTIONAL override default config
+     * @param string Logger $cache OPTIONAL override the default logger with a custom one.
+     * @param string CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
     public function __construct(string|int $id, ?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
@@ -87,30 +87,52 @@ class Tv extends MdbBase
         if (empty($data) || empty((array) $data)) {
             return $this->results;
         }
-        $this->tmdbId = isset($data->id) ? $data->id : null;
-        $this->imdbId = isset($data->external_ids->imdb_id) ? $data->external_ids->imdb_id : null;
-        $this->wikidataId = isset($data->external_ids->wikidata_id) ? $data->external_ids->wikidata_id : null;
-        $this->tvdbId = isset($data->external_ids->tvdb_id) ? $data->external_ids->tvdb_id : null;
-        $this->name = isset($data->name) ? $data->name : null;
-        $this->originalName = isset($data->original_name) ? $data->original_name : null;
-        $this->overview = isset($data->overview) ? $data->overview : null;
-        $this->originalLanguage = isset($data->original_language) ? $data->original_language : null;
-        $this->firstAirDate = isset($data->first_air_date) ? $data->first_air_date : null;
-        $this->lastAirDate = isset($data->last_air_date) ? $data->last_air_date : null;
-        $this->totalSeasons = isset($data->number_of_seasons) ? $data->number_of_seasons : 0;
-        $this->totalEpisodes = isset($data->number_of_episodes) ? $data->number_of_episodes : 0;
-        $this->tagline = isset($data->tagline) ? $data->tagline : null;
-        $this->status = isset($data->status) ? $data->status : null;
-        $this->adult = isset($data->adult) ? $data->adult : true;
-        $this->type = isset($data->type) ? $data->type : null;
-        $this->inProduction = isset($data->in_production) ? $data->in_production : false;
-        $this->homepage = isset($data->homepage) ? $data->homepage : null;
-        $this->popularity = isset($data->popularity) ? $data->popularity : null;
-        $this->voteCount = isset($data->vote_count) ? $data->vote_count : null;
-        $this->voteAverage = isset($data->vote_average) ? $data->vote_average : null;
-        $this->posterImgPath = isset($data->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                           $this->config->posterImageSize .
-                                                           $data->poster_path : null;
+        $this->tmdbId = isset($data->id) ?
+                              $data->id : null;
+        $this->imdbId = isset($data->external_ids->imdb_id) ?
+                              $data->external_ids->imdb_id : null;
+        $this->wikidataId = isset($data->external_ids->wikidata_id) ?
+                                  $data->external_ids->wikidata_id : null;
+        $this->tvdbId = isset($data->external_ids->tvdb_id) ?
+                              $data->external_ids->tvdb_id : null;
+        $this->name = isset($data->name) ?
+                            $data->name : null;
+        $this->originalName = isset($data->original_name) ?
+                                    $data->original_name : null;
+        $this->overview = isset($data->overview) ?
+                                $data->overview : null;
+        $this->originalLanguage = isset($data->original_language) ?
+                                        $data->original_language : null;
+        $this->firstAirDate = isset($data->first_air_date) ?
+                                    $data->first_air_date : null;
+        $this->lastAirDate = isset($data->last_air_date) ?
+                                   $data->last_air_date : null;
+        $this->totalSeasons = isset($data->number_of_seasons) ?
+                                    $data->number_of_seasons : 0;
+        $this->totalEpisodes = isset($data->number_of_episodes) ?
+                                     $data->number_of_episodes : 0;
+        $this->tagline = isset($data->tagline) ?
+                               $data->tagline : null;
+        $this->status = isset($data->status) ?
+                              $data->status : null;
+        $this->adult = isset($data->adult) ?
+                             $data->adult : true;
+        $this->type = isset($data->type) ?
+                            $data->type : null;
+        $this->inProduction = isset($data->in_production) ?
+                                    $data->in_production : false;
+        $this->homepage = isset($data->homepage) ?
+                                $data->homepage : null;
+        $this->popularity = isset($data->popularity) ?
+                                  $data->popularity : null;
+        $this->voteCount = isset($data->vote_count) ?
+                                 $data->vote_count : null;
+        $this->voteAverage = isset($data->vote_average) ?
+                                   $data->vote_average : null;
+        $this->posterImgPath = isset($data->poster_path) ?
+                                     $this->config->baseImageUrl . '/' .
+                                     $this->config->posterImageSize .
+                                     $data->poster_path : null;
         // genres
         if (isset($data->genres) &&
             is_array($data->genres) &&
@@ -119,8 +141,10 @@ class Tv extends MdbBase
         {
             foreach ($data->genres as $genreObject) {
                 $this->genres[] = array(
-                    'id' => isset($genreObject->id) ? $genreObject->id : null,
-                    'name' => isset($genreObject->name) ? $genreObject->name : null
+                    'id' => isset($genreObject->id) ?
+                                  $genreObject->id : null,
+                    'name' => isset($genreObject->name) ?
+                                    $genreObject->name : null
                 );
             }
         }
@@ -159,13 +183,16 @@ class Tv extends MdbBase
         {
             foreach ($data->production_companies as $companyObject) {
                 $this->productionCompanies[] = array(
-                    'id' => isset($companyObject->id) ? $companyObject->id : null,
-                    'name' => isset($companyObject->name) ? $companyObject->name : null,
+                    'id' => isset($companyObject->id) ?
+                                  $companyObject->id : null,
+                    'name' => isset($companyObject->name) ?
+                                    $companyObject->name : null,
                     'originCountry' => isset($companyObject->origin_country) ?
                                              $companyObject->origin_country : null,
-                    'LogoImgPath' => isset($companyObject->logo_path) ? $this->config->baseImageUrl . '/' .
-                                                                        $this->config->logoImageSize .
-                                                                        $companyObject->logo_path : null
+                    'LogoImgPath' => isset($companyObject->logo_path) ?
+                                           $this->config->baseImageUrl . '/' .
+                                           $this->config->logoImageSize .
+                                           $companyObject->logo_path : null
                 );
             }
         }
@@ -201,8 +228,6 @@ class Tv extends MdbBase
                 );
             }
         }
-
-        //additional input methods
         // alternative titles (also known as)
         if (isset($data->alternative_titles->results) &&
             is_array($data->alternative_titles->results) &&
@@ -227,9 +252,10 @@ class Tv extends MdbBase
             foreach ($imagesArray as $indexKey => $imageData) {
                 foreach ($imageData as $imageItem) {
                     $this->images[$indexKey][] = array(
-                        'imgPath' => isset($imageItem->file_path) ? $this->config->baseImageUrl . '/' .
-                                                                   $this->config->backdropImageSize .
-                                                                   $imageItem->file_path : null,
+                        'imgPath' => isset($imageItem->file_path) ?
+                                           $this->config->baseImageUrl . '/' .
+                                           $this->config->backdropImageSize .
+                                           $imageItem->file_path : null,
                         'height' => isset($imageItem->height) ?
                                           $imageItem->height : null,
                         'width' => isset($imageItem->width) ?
@@ -262,14 +288,21 @@ class Tv extends MdbBase
            )
         {
             foreach ($data->videos->results as $videos) {
-                $type = isset($videos->type) ? str_replace(' ', '', $videos->type) : 'Uncategorized';
+                $type = isset($videos->type) ?
+                              str_replace(' ', '', $videos->type) : 'Uncategorized';
                 $this->videos[$type][] = array(
-                    'tmdbVideoId' => isset($videos->id) ? $videos->id : null,
-                    'name' => isset($videos->name) ? $videos->name : null,
-                    'key' => isset($videos->key) ? $videos->key : null,
-                    'site' => isset($videos->site) ? $videos->site : null,
-                    'size' => isset($videos->size) ? $videos->size : null,
-                    'official' => isset($videos->official) ? $videos->official : false
+                    'tmdbVideoId' => isset($videos->id) ?
+                                           $videos->id : null,
+                    'name' => isset($videos->name) ?
+                                    $videos->name : null,
+                    'key' => isset($videos->key) ?
+                                   $videos->key : null,
+                    'site' => isset($videos->site) ?
+                                    $videos->site : null,
+                    'size' => isset($videos->size) ?
+                                    $videos->size : null,
+                    'official' => isset($videos->official) ?
+                                        $videos->official : false
                 );
             }
         }
@@ -281,8 +314,10 @@ class Tv extends MdbBase
         {
             foreach ($data->recommendations->results as $recommendation) {
                 $this->recommendations[] = array(
-                    'id' => isset($recommendation->id) ? $recommendation->id : null,
-                    'title' => isset($recommendation->name) ? $recommendation->name : null,
+                    'id' => isset($recommendation->id) ?
+                                  $recommendation->id : null,
+                    'title' => isset($recommendation->name) ?
+                                     $recommendation->name : null,
                     'originalTitle' => isset($recommendation->original_name) ?
                                              $recommendation->original_name : null,
                     'firstAirDate' => isset($recommendation->first_air_date) ?
@@ -293,9 +328,10 @@ class Tv extends MdbBase
                                          $recommendation->media_type : null,
                     'voteAverage' => isset($recommendation->vote_average) ?
                                            $recommendation->vote_average : null,
-                    'imgPath' => isset($recommendation->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                                       $this->config->posterImageSize .
-                                                                       $recommendation->poster_path : null,
+                    'imgPath' => isset($recommendation->poster_path) ?
+                                       $this->config->baseImageUrl . '/' .
+                                       $this->config->posterImageSize .
+                                       $recommendation->poster_path : null
                 );
             }
         }
@@ -314,19 +350,26 @@ class Tv extends MdbBase
                 {
                     foreach ($cast->roles as $role) {
                         $roles[] = array(
-                            'character' => isset($role->character) ? $role->character : null,
-                            'creditId' => isset($role->credit_id) ? $role->credit_id : null,
-                            'episodeCount' => isset($role->episode_count) ? $role->episode_count : null
+                            'character' => isset($role->character) ?
+                                                 $role->character : null,
+                            'creditId' => isset($role->credit_id) ?
+                                                $role->credit_id : null,
+                            'episodeCount' => isset($role->episode_count) ?
+                                                    $role->episode_count : null
                         );
                     }
                 }
                 $this->cast[] = array(
-                    'id' => isset($cast->id) ? $cast->id : null,
-                    'name' => isset($cast->name) ? $cast->name : null,
-                    'originalName' => isset($cast->original_name) ? $cast->original_name : null,
-                    'imgPath' => isset($cast->profile_path) ? $this->config->baseImageUrl . '/' .
-                                                              $this->config->profileImageSize .
-                                                              $cast->profile_path : null,
+                    'id' => isset($cast->id) ?
+                                  $cast->id : null,
+                    'name' => isset($cast->name) ?
+                                    $cast->name : null,
+                    'originalName' => isset($cast->original_name) ?
+                                            $cast->original_name : null,
+                    'imgPath' => isset($cast->profile_path) ?
+                                       $this->config->baseImageUrl . '/' .
+                                       $this->config->profileImageSize .
+                                       $cast->profile_path : null,
                     'roles' => $roles
                 );
             }
@@ -338,7 +381,8 @@ class Tv extends MdbBase
            )
         {
             foreach ($data->aggregate_credits->crew as $crew) {
-                $type = isset($crew->department) ? lcfirst(str_replace(' ', '', $crew->department)) : 'Uncategorized';
+                $type = isset($crew->department) ?
+                              lcfirst(str_replace(' ', '', $crew->department)) : 'Uncategorized';
                 $jobs = array();
                 if (isset($crew->jobs) &&
                     is_array($crew->jobs) &&
@@ -347,19 +391,26 @@ class Tv extends MdbBase
                 {
                     foreach ($crew->jobs as $job) {
                         $jobs[] = array(
-                            'job' => isset($job->job) ? $job->job : null,
-                            'creditId' => isset($job->credit_id) ? $job->credit_id : null,
-                            'episodeCount' => isset($job->episode_count) ? $job->episode_count : null
+                            'job' => isset($job->job) ?
+                                           $job->job : null,
+                            'creditId' => isset($job->credit_id) ?
+                                                $job->credit_id : null,
+                            'episodeCount' => isset($job->episode_count) ?
+                                                    $job->episode_count : null
                         );
                     }
                 }
                 $this->crew[$type][] = array(
-                    'id' => isset($crew->id) ? $crew->id : null,
-                    'name' => isset($crew->name) ? $crew->name : null,
-                    'originalName' => isset($crew->original_name) ? $crew->original_name : null,
-                    'imgPath' => isset($crew->profile_path) ? $this->config->baseImageUrl . '/' .
-                                                              $this->config->profileImageSize .
-                                                              $crew->profile_path : null,
+                    'id' => isset($crew->id) ?
+                                  $crew->id : null,
+                    'name' => isset($crew->name) ?
+                                    $crew->name : null,
+                    'originalName' => isset($crew->original_name) ?
+                                            $crew->original_name : null,
+                    'imgPath' => isset($crew->profile_path) ?
+                                       $this->config->baseImageUrl . '/' .
+                                       $this->config->profileImageSize .
+                                       $crew->profile_path : null,
                     'jobs' => $jobs
                 );
             }
@@ -376,9 +427,10 @@ class Tv extends MdbBase
                                   $network->id : null,
                     'name' => isset($network->name) ?
                                     $network->name : null,
-                    'imgLogoPath' => isset($network->logo_path) ? $this->config->baseImageUrl . '/' .
-                                                                  $this->config->logoImageSize .
-                                                                  $network->logo_path : null
+                    'imgLogoPath' => isset($network->logo_path) ?
+                                           $this->config->baseImageUrl . '/' .
+                                           $this->config->logoImageSize .
+                                           $network->logo_path : null
                 );
             }
         }
@@ -390,16 +442,24 @@ class Tv extends MdbBase
         {
             foreach ($data->seasons as $key => $seasonsObject) {
                 $this->seasonsData[$key + 1] = array(
-                    'id' => isset($seasonsObject->id) ? $seasonsObject->id : null,
-                    'name' => isset($seasonsObject->name) ? $seasonsObject->name : null,
-                    'overview' => isset($seasonsObject->overview) ? $seasonsObject->overview : null,
-                    'airdate' => isset($seasonsObject->air_date) ? $seasonsObject->air_date : null,
-                    'seasonNumber' => isset($seasonsObject->season_number) ? $seasonsObject->season_number : null,
-                    'episodeCount' => isset($seasonsObject->episode_count) ? $seasonsObject->episode_count : null,
-                    'voteAverage' => isset($seasonsObject->vote_average) ? $seasonsObject->vote_average : null,
-                    'posterImgPath' => isset($seasonsObject->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                                            $this->config->posterImageSize .
-                                                                            $seasonsObject->poster_path : null
+                    'id' => isset($seasonsObject->id) ?
+                                  $seasonsObject->id : null,
+                    'name' => isset($seasonsObject->name) ?
+                                    $seasonsObject->name : null,
+                    'overview' => isset($seasonsObject->overview) ?
+                                        $seasonsObject->overview : null,
+                    'airdate' => isset($seasonsObject->air_date) ?
+                                       $seasonsObject->air_date : null,
+                    'seasonNumber' => isset($seasonsObject->season_number) ?
+                                            $seasonsObject->season_number : null,
+                    'episodeCount' => isset($seasonsObject->episode_count) ?
+                                            $seasonsObject->episode_count : null,
+                    'voteAverage' => isset($seasonsObject->vote_average) ?
+                                           $seasonsObject->vote_average : null,
+                    'posterImgPath' => isset($seasonsObject->poster_path) ?
+                                             $this->config->baseImageUrl . '/' .
+                                             $this->config->posterImageSize .
+                                             $seasonsObject->poster_path : null
                 );
             }
         }
@@ -430,9 +490,10 @@ class Tv extends MdbBase
                                                         $episode->season_number : null,
                                 'episodeNumber' => isset($episode->episode_number) ?
                                                          $episode->episode_number : null,
-                                'imgStillPath' => isset($episode->still_path) ? $this->config->baseImageUrl . '/' .
-                                                                                $this->config->stillImageSize .
-                                                                                $episode->still_path : null
+                                'imgStillPath' => isset($episode->still_path) ?
+                                                        $this->config->baseImageUrl . '/' .
+                                                        $this->config->stillImageSize .
+                                                        $episode->still_path : null
                             );
                         }
                     }
@@ -449,11 +510,14 @@ class Tv extends MdbBase
                 foreach ($providerItems as $itemsKey => $provider) {
                     foreach ($provider as $providerData) {
                         $this->watchProviders[$watchindexKey][$itemsKey][] = array(
-                            'providerId' => isset($providerData->provider_id) ? $providerData->provider_id : null,
-                            'providerName' => isset($providerData->provider_name) ? $providerData->provider_name : null,
-                            'imgLogoPath' => isset($providerData->logo_path) ? $this->config->baseImageUrl . '/' .
-                                                                               $this->config->logoImageSize .
-                                                                               $providerData->logo_path : null
+                            'providerId' => isset($providerData->provider_id) ?
+                                                  $providerData->provider_id : null,
+                            'providerName' => isset($providerData->provider_name) ?
+                                                    $providerData->provider_name : null,
+                            'imgLogoPath' => isset($providerData->logo_path) ?
+                                                   $this->config->baseImageUrl . '/' .
+                                                   $this->config->logoImageSize .
+                                                   $providerData->logo_path : null
                         );
                     }
                 }
@@ -467,9 +531,12 @@ class Tv extends MdbBase
         {
             foreach ($data->reviews->results as $reviewObject) {
                 $this->reviews[] = array(
-                    'id' => isset($reviewObject->id) ? $reviewObject->id : null,
-                    'author' => isset($reviewObject->author) ? $reviewObject->author : null,
-                    'content' => isset($reviewObject->content) ? $reviewObject->content : null
+                    'id' => isset($reviewObject->id) ?
+                                  $reviewObject->id : null,
+                    'author' => isset($reviewObject->author) ?
+                                      $reviewObject->author : null,
+                    'content' => isset($reviewObject->content) ?
+                                       $reviewObject->content : null
                 );
             }
         }
@@ -548,4 +615,5 @@ class Tv extends MdbBase
         );
         return $this->results;
     }
+
 }

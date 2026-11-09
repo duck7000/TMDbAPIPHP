@@ -23,9 +23,9 @@ class PersonList extends MdbBase
     protected $popularResults = array();
 
     /**
-     * @param Config $config OPTIONAL override default config
-     * @param Logger $cache OPTIONAL override the default logger with a custom one.
-     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
+     * @param string Config $config OPTIONAL override default config
+     * @param string Logger $cache OPTIONAL override the default logger with a custom one.
+     * @param string CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
     public function __construct(?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
@@ -53,23 +53,31 @@ class PersonList extends MdbBase
             {
                 foreach ($data->known_for as $knownForObject) {
                     $knownFor[] = array(
-                        'id' => isset($knownForObject->id) ? $knownForObject->id : null,
-                        'name' => isset($knownForObject->name) ? $knownForObject->name : null
+                        'id' => isset($knownForObject->id) ?
+                                      $knownForObject->id : null,
+                        'name' => isset($knownForObject->name) ?
+                                        $knownForObject->name : null
                     );
                 }
             }
             // results array
             $this->popularResults[] = array(
-                'id' => isset($data->id) ? $data->id : null,
-                'name' => isset($data->name) ? $data->name : null,
-                'originalName' => isset($data->original_name) ? $data->original_name : null,
-                'popularity' => isset($data->popularity) ? $data->popularity : null,
+                'id' => isset($data->id) ?
+                              $data->id : null,
+                'name' => isset($data->name) ?
+                                $data->name : null,
+                'originalName' => isset($data->original_name) ?
+                                        $data->original_name : null,
+                'popularity' => isset($data->popularity) ?
+                                      $data->popularity : null,
                 'knownFor' => $knownFor,
-                'profileImgPath' => isset($data->profile_path) ? $this->config->baseImageUrl . '/' .
-                                                               $this->config->profileImageSize .
-                                                               $data->profile_path : null
+                'profileImgPath' => isset($data->profile_path) ?
+                                          $this->config->baseImageUrl . '/' .
+                                          $this->config->profileImageSize .
+                                          $data->profile_path : null
             );
         }
         return $this->popularResults;
     }
+
 }
