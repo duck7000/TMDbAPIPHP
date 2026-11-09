@@ -27,9 +27,9 @@ class Api
 
     /**
      * API constructor.
-     * @param CacheInterface $cache
-     * @param LoggerInterface $logger
-     * @param Config $config
+     * @param string CacheInterface $cache
+     * @param string LoggerInterface $logger
+     * @param string Config $config
      */
     public function __construct($cache, $logger, $config)
     {
@@ -44,7 +44,7 @@ class Api
      * @param string $searchInputString input search string
      * @param string $searchType like movie, tv, person or multi
      * @param bool $includeAdult include adult results or not
-     * @return \stdClass
+     * @return object|false
      */
     public function doTextSearch($searchInputString, $searchType, $includeAdult)
     {
@@ -66,7 +66,7 @@ class Api
      * Search request for TitleSearch class for external id
      * @param string $externalId input external id number
      * @param string $externalSource input external id (imdb only)
-     * @return \stdClass
+     * @return object|false
      */
     public function doExternalIdSearch($externalId, $externalSource)
     {
@@ -83,7 +83,7 @@ class Api
      * Get request for Movie, Tv and Person class
      * @param string $tmdbId input TMDb ID
      * @param string $movieType input movie type like movie, tv or person
-     * @return \stdClass
+     * @return object|false
      */
     public function doLookup($tmdbId, $movieType)
     {
@@ -119,7 +119,7 @@ class Api
      * @param string $mediaType media type like movie, tv or person
      * @param string $listName list name like popular, upcoming, topRated
      * @param int $maxPages max number of data pages to return
-     * @return array
+     * @return array|object
      */
     public function doListLookup($mediaType, $listName, $maxPages)
     {
@@ -143,7 +143,7 @@ class Api
      * Get request for Trending class
      * @param string $type trending type: movie, person, tv, all (default: all)
      * @param string $timeWindow time window: day, week (default: week)
-     * @return \stdClass
+     * @return object|array
      */
     public function doListTrendingLookup($type, $timeWindow)
     {
@@ -159,7 +159,7 @@ class Api
      * Get request for Collection and Company class
      * @param int $tmdbId input TMDb ID
      * @param string $type collection or company
-     * @return \stdClass
+     * @return object|array
      */
     public function doTypeLookup($tmdbId, $type)
     {
@@ -176,7 +176,7 @@ class Api
      * @param string|int $accountId input account Id
      * @param string $listType account lookup list type: details, favorite, rated or watchlist
      * @param string $mediaType account lookup media type: movies or tv
-     * @return \stdClass
+     * @return array|object
      */
     public function doUserAccountListLookup($accountId, $listType, $mediaType = "movies")
     {
@@ -205,7 +205,7 @@ class Api
      * Get request for Changes class
      * @param string $mediaType account lookup media type: movie, tv, person
      * @param int $days number of days to return, max 14 days
-     * @return \stdClass
+     * @return array|object
      */
     public function doChangesLookup($mediaType = "movie", $days = 1)
     {
@@ -230,7 +230,7 @@ class Api
     /**
      * Execute request
      * @param string $url
-     * @return \stdClass
+     * @return object|false
      */
     public function execRequest($url)
     {
@@ -258,13 +258,12 @@ class Api
      * @param string $id TMDb id from doMovieLookup(), doTvLookup() and doPersonLookup()
      * @param string $url exec url from doMovieLookup(), doTvLookup() and doPersonLookup()
      * @param string $ext cache filename extension
-     * @return \stdClass
+     * @return object|array
      */
     public function setCache($id, $url, $ext = '')
     {
         $key = $id . $ext . '.json';
         $fromCache = $this->cache->get($key);
-
         if ($fromCache != null) {
             return json_decode($fromCache);
         }
@@ -279,7 +278,7 @@ class Api
      * @param string $url exec url from doChangesLookup(), doUserAccountListLookup() and doListLookup()
      * @param string $ext cache filename extension
      * @param int $ext total pages to fetch
-     * @return \stdClass
+     * @return object|array
      */
     public function setCachePaging($id, $url, $ext, $totalPages)
     {
@@ -287,7 +286,6 @@ class Api
         $results = array();
         $key = $id . $ext . '.json';
         $fromCache = $this->cache->get($key);
-
         if ($fromCache != null) {
             return json_decode($fromCache);
         }
@@ -305,7 +303,7 @@ class Api
      * Caching return data for seasons and episodes
      * @param int $id TMDb tv show id
      * @param int $totalSeasons total number of seasons
-     * @return array()
+     * @return object
      */
     public function setCacheSeasons($id, $totalSeasons)
     {

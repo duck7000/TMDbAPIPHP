@@ -21,9 +21,9 @@ class Changes extends MdbBase
 {
 
     /**
-     * @param Config $config OPTIONAL override default config
-     * @param Logger $cache OPTIONAL override the default logger with a custom one.
-     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
+     * @param string Config $config OPTIONAL override default config
+     * @param string Logger $cache OPTIONAL override the default logger with a custom one.
+     * @param string CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
     public function __construct(?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
@@ -32,7 +32,7 @@ class Changes extends MdbBase
 
     /**
      * Fetch movie ids that have been changed
-     *      * @param int $days number of days in the past to return, max 14 days
+     * @param int $days number of days in the past to return, max 14 days
      * @note if parameter $days is omitted 1 day is returned
      * @return array
      */
@@ -85,4 +85,5 @@ class Changes extends MdbBase
         }
         return $results;
     }
+
 }

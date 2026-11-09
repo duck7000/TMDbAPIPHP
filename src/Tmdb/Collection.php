@@ -23,9 +23,9 @@ class Collection extends MdbBase
     protected $collectionResults = array();
 
     /**
-     * @param Config $config OPTIONAL override default config
-     * @param Logger $cache OPTIONAL override the default logger with a custom one.
-     * @param CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
+     * @param string Config $config OPTIONAL override default config
+     * @param string Logger $cache OPTIONAL override the default logger with a custom one.
+     * @param string CacheInterface $cache OPTIONAL override the default cache with any PSR-16 cache.
      */
     public function __construct(?Config $config = null, ?LoggerInterface $logger = null, ?CacheInterface $cache = null)
     {
@@ -53,27 +53,39 @@ class Collection extends MdbBase
         {
             foreach ($resultData->parts as $item) {
                 $parts[] = array(
-                    'id' => isset($item->id) ? $item->id : null,
-                    'title' => isset($item->title) ? $item->title : null,
-                    'originalTitle' => isset($item->original_title) ? $item->original_title : null,
-                    'overview' => isset($item->overview) ? $item->overview : null,
-                    'imgUrl' => isset($item->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                            $this->config->posterImageSize .
-                                                            $item->poster_path : null,
-                    'releaseDate' => isset($item->release_date) ? $item->release_date : null,
-                    'mediaType' => isset($item->media_type) ? $item->media_type : null
+                    'id' => isset($item->id) ?
+                                  $item->id : null,
+                    'title' => isset($item->title) ?
+                                     $item->title : null,
+                    'originalTitle' => isset($item->original_title) ?
+                                             $item->original_title : null,
+                    'overview' => isset($item->overview) ?
+                                        $item->overview : null,
+                    'imgUrl' => isset($item->poster_path) ?
+                                      $this->config->baseImageUrl . '/' .
+                                      $this->config->posterImageSize .
+                                      $item->poster_path : null,
+                    'releaseDate' => isset($item->release_date) ?
+                                           $item->release_date : null,
+                    'mediaType' => isset($item->media_type) ?
+                                         $item->media_type : null
                 );
             }
         }
         $this->collectionResults = array(
-            'collectionId' => isset($resultData->id) ? $resultData->id : null,
-            'collectionName' => isset($resultData->name) ? $resultData->name : null,
-            'collectionOverview' => isset($resultData->overview) ? $resultData->overview : null,
-            'collectionImgUrl' => isset($resultData->poster_path) ? $this->config->baseImageUrl . '/' .
-                                                                    $this->config->posterImageSize .
-                                                                    $resultData->poster_path : null,
+            'collectionId' => isset($resultData->id) ?
+                                    $resultData->id : null,
+            'collectionName' => isset($resultData->name) ?
+                                      $resultData->name : null,
+            'collectionOverview' => isset($resultData->overview) ?
+                                          $resultData->overview : null,
+            'collectionImgUrl' => isset($resultData->poster_path) ?
+                                        $this->config->baseImageUrl . '/' .
+                                        $this->config->posterImageSize .
+                                        $resultData->poster_path : null,
             'collectionParts' => $parts
         );
         return $this->collectionResults;
     }
+
 }
